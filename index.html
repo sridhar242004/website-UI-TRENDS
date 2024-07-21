@@ -81,7 +81,7 @@
         }
 
         .experimental-text {
-            font-size: 6rem;
+            font-size: clamp(2rem, 5vw, 6rem);
             font-weight: 900;
             background: linear-gradient(45deg, #0a0a0a, #4ecdc4, #45b7d1);
             -webkit-background-clip: text;
@@ -102,18 +102,24 @@
         .micro-interaction:hover {
             transform: scale(1.1);
         }
+
+        @media (max-width: 640px) {
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100">
     <div id="app" v-cloak>
         <!-- Navigation -->
         <nav :class="{'bg-transparent': !scrolled, 'bg-white shadow-lg': scrolled}" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-            <div class="container mx-auto px-6 py-3">
-                <div class="flex justify-between items-center">
-                    <a href="#" :class="{'text-white': !scrolled, 'text-gray-800': scrolled}" class="text-2xl font-bold transition-colors duration-300">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="#" :class="{'text-white': !scrolled, 'text-gray-800': scrolled}" class="text-xl sm:text-2xl font-bold transition-colors duration-300">
                         Web Trends Explorer 
                     </a>
-                    <div class="hidden md:flex space-x-8">
+                    <div class="hidden md:flex space-x-4 lg:space-x-8">
                         <a v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id)" 
                            :class="{'text-white hover:text-gray-300': !scrolled, 'text-gray-800 hover:text-gray-600': scrolled}"
                            class="cursor-pointer transition-colors duration-300">
@@ -130,9 +136,9 @@
         <!-- Mobile Menu -->
         <div v-show="mobileMenuOpen" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 flex items-center justify-center">
             <div class="text-center">
-                <div class="space-y-8">
+                <div class="space-y-6">
                     <a v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id); toggleMobileMenu()"
-                       class="block text-white text-2xl hover:text-gray-300 transition-colors duration-300">
+                       class="block text-white text-xl hover:text-gray-300 transition-colors duration-300">
                         {{ item.name }}
                     </a>
                 </div>
@@ -140,7 +146,7 @@
         </div>
 
         <!-- Hero Section -->
-        <section id="home" class="relative h-screen overflow-hidden">
+        <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
             <!-- Edgeless Media Background -->
             <div class="absolute inset-0 overflow-hidden">
                 <img src="https://source.unsplash.com/random/1920x1080?abstract" alt="Abstract Background" class="w-full h-full object-cover filter blur-sm">
@@ -149,16 +155,16 @@
             <!-- Glassmorphism Overlay -->
             <div class="absolute inset-0 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg"></div>
 
-            <!-- Bento Grid Layout -->
-            <div class="relative z-10 h-full container mx-auto px-6 py-12 flex items-center">
-                <div class="bento-grid w-full">
+            <!-- Content -->
+            <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="bento-grid">
                     <!-- Main Content -->
-                    <div class="bento-item col-span-2 space-y-8">
-                        <h1 class="experimental-text">
+                    <div class="bento-item col-span-2 space-y-6 text-center sm:text-left">
+                        <h1 class="experimental-text leading-tight">
                             Web Design Revolution
                         </h1>
-                        <p class="text-xl text-gray-200">
-                            Explore cutting-edge trends, interact with live examples, and elevate your projects.
+                        <p class="text-lg sm:text-xl text-gray-200 max-w-2xl">
+                            Explore cutting-edge trends, interact with live examples, and elevate your projects with our innovative tools and community-driven insights.
                         </p>
                         <a href="#trends" class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-8 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 micro-interaction">
                             Explore Trends
@@ -166,7 +172,7 @@
                     </div>
                     
                     <!-- Lottie Animation -->
-                    <div class="bento-item">
+                    <div class="bento-item hidden sm:block">
                         <lottie-player 
                             src="https://assets3.lottiefiles.com/packages/lf20_iorpbol0.json"
                             background="transparent"
@@ -179,7 +185,7 @@
 
                     <!-- Feature Highlights -->
                     <div class="bento-item">
-                        <h3 class="text-2xl font-bold text-white mb-4">Key Features</h3>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-4">Key Features</h3>
                         <ul class="text-gray-200 space-y-2">
                             <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Interactive Demos</li>
                             <li><i class="fas fa-check-circle text-green-400 mr-2"></i> AI Design Assistant</li>
@@ -199,11 +205,11 @@
 
         <!-- Trends Section -->
         <section id="trends" class="section py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold mb-12 text-center">Latest Web Design Trends</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Latest Web Design Trends</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div v-for="trend in trends" :key="trend.id" class="trend-card bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="relative h-64">
+                        <div class="relative h-48 sm:h-64">
                             <img :src="trend.image" :alt="trend.title" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
                                 <button @click="openTrendDemo(trend)" class="bg-white text-purple-600 font-bold py-2 px-4 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300">
@@ -212,7 +218,7 @@
                             </div>
                         </div>
                         <div class="p-6">
-                            <h3 class="text-2xl font-semibold mb-2">{{ trend.title }}</h3>
+                            <h3 class="text-xl sm:text-2xl font-semibold mb-2">{{ trend.title }}</h3>
                             <p class="text-gray-600 mb-4">{{ trend.description }}</p>
                             <div class="flex justify-between items-center">
                                 <button @click="downloadCode(trend)" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
@@ -228,12 +234,12 @@
 
         <!-- Interactive Playground -->
         <section id="interactive-playground" class="section py-20 bg-gray-100">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold mb-12 text-center">Interactive Playground</h2>
-                <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Interactive Playground</h2>
+                <div class="bg-white rounded-lg shadow-lg p-6 sm:p-8">
                     <div class="mb-8">
-                        <h3 class="text-2xl font-semibold mb-4">CSS Generator</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <h3 class="text-xl sm:text-2xl font-semibold mb-4">CSS Generator</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-gray-700 text-sm font-bold mb-2" for="bgColor">
                                     Background Color
@@ -260,15 +266,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col md:flex-row gap-8">
+                    <div class="flex flex-col sm:flex-row gap-8">
                         <div class="flex-1">
-                            <h4 class="text-xl font-semibold mb-4">Preview</h4>
+                            <h4 class="text-lg sm:text-xl font-semibold mb-4">Preview</h4>
                             <div class="border rounded-lg overflow-hidden" :style="generatedCSS">
                                 <p class="text-center py-4">Preview Text</p>
                             </div>
                         </div>
                         <div class="flex-1">
-                            <h4 class="text-xl font-semibold mb-4">Generated CSS</h4>
+                            <h4 class="text-lg sm:text-xl font-semibold mb-4">Generated CSS</h4>
                             <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code>{{ generatedCSSCode }}</code></pre>
                             <button @click="copyCSS" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
                                 <i class="fas fa-copy mr-2"></i>Copy CSS
@@ -281,1294 +287,1295 @@
 
         <!-- AI Design Assistant -->
         <section id="ai-assistant" class="section py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold mb-12 text-center">AI Design Assistant</h2>
-                <div class="max-w-3xl mx-auto">
-                    <div class="bg-gray-100 rounded-lg p-6 mb-8">
-                        <h3 class="text-2xl font-semibold mb-4">Ask the AI</h3>
-                        <textarea v-model="aiPrompt" rows="4" class="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="Describe your design challenge or ask for suggestions..."></textarea>
-                        <button @click="generateAIResponse" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                            <i class="fas fa-robot mr-2"></i>Generate Response
-                        </button>
-                    </div>
-                    <div v-if="aiResponse" class="bg-white rounded-lg shadow-lg p-6">
-                        <h4 class="text-xl font-semibold mb-4">AI Response:</h4>
-                        <p class="text-gray-700">{{ aiResponse }}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">AI Design Assistant</h2>
+              <div class="max-w-3xl mx-auto">
+                  <div class="bg-gray-100 rounded-lg p-6 mb-8">
+                      <h3 class="text-xl sm:text-2xl font-semibold mb-4">Ask the AI</h3>
+                      <textarea v-model="aiPrompt" rows="4" class="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="Describe your design challenge or ask for suggestions..."></textarea>
+                      <button @click="generateAIResponse" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
+                          <i class="fas fa-robot mr-2"></i>Generate Response
+                      </button>
+                  </div>
+                  <div v-if="aiResponse" class="bg-white rounded-lg shadow-lg p-6">
+                      <h4 class="text-lg sm:text-xl font-semibold mb-4">AI Response:</h4>
+                      <p class="text-gray-700">{{ aiResponse }}</p>
+                  </div>
+              </div>
+          </div>
+      </section>
 
-        <!-- Community Showcase -->
-        <section id="community" class="section py-20 bg-gray-100">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold mb-12 text-center">Community Showcase</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="project in communityProjects" :key="project.id" class="bg-white rounded-lg shadow-lg overflow-hidden">
-                        <img :src="project.image" :alt="project.title" class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-semibold mb-2">{{ project.title }}</h3>
-                            <p class="text-gray-600 mb-4">{{ project.description }}</p>
-                            <div class="flex justify-between items-center">
-                                <a :href="project.link" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
-                                    View Project
-                                    <i class="fas fa-external-link-alt ml-1"></i>
-                                </a>
-                                <div class="flex items-center">
-                                    <img :src="project.authorAvatar" :alt="project.author" class="w-8 h-8 rounded-full mr-2">
-                                    <span class="text-sm text-gray-500">{{ project.author }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-12">
-                    <button @click="openSubmitProjectModal" class="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-700 transition-colors duration-300">
-                        <i class="fas fa-plus-circle mr-2"></i>Submit Your Project
-                    </button>
-                </div>
-            </div>
-        </section>
+      <!-- Community Showcase -->
+      <section id="community" class="section py-20 bg-gray-100">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Community Showcase</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div v-for="project in communityProjects" :key="project.id" class="bg-white rounded-lg shadow-lg overflow-hidden">
+                      <img :src="project.image" :alt="project.title" class="w-full h-48 object-cover">
+                      <div class="p-6">
+                          <h3 class="text-xl font-semibold mb-2">{{ project.title }}</h3>
+                          <p class="text-gray-600 mb-4">{{ project.description }}</p>
+                          <div class="flex justify-between items-center">
+                              <a :href="project.link" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
+                                  View Project
+                                  <i class="fas fa-external-link-alt ml-1"></i>
+                              </a>
+                              <div class="flex items-center">
+                                  <img :src="project.authorAvatar" :alt="project.author" class="w-8 h-8 rounded-full mr-2">
+                                  <span class="text-sm text-gray-500">{{ project.author }}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="text-center mt-12">
+                  <button @click="openSubmitProjectModal" class="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-700 transition-colors duration-300">
+                      <i class="fas fa-plus-circle mr-2"></i>Submit Your Project
+                  </button>
+              </div>
+          </div>
+      </section>
 
-        <!-- Learning Resources -->
-        <section id="resources" class="section py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold mb-12 text-center">Learning Resources</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="resource in learningResources" :key="resource.id" class="bg-gray-100 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                        <i :class="resource.icon" class="text-4xl text-purple-600 mb-4"></i>
-                        <h3 class="text-xl font-semibold mb-2">{{ resource.title }}</h3>
-                        <p class="text-gray-600 mb-4">{{ resource.description }}</p>
-                        <a :href="resource.link" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300 flex items-center">
-                            Learn More
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <!-- Learning Resources -->
+      <section id="resources" class="section py-20 bg-white">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Learning Resources</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div v-for="resource in learningResources" :key="resource.id" class="bg-gray-100 rounded-lg p-6 hover:shadow-lg transition duration-300">
+                      <i :class="resource.icon" class="text-4xl text-purple-600 mb-4"></i>
+                      <h3 class="text-xl font-semibold mb-2">{{ resource.title }}</h3>
+                      <p class="text-gray-600 mb-4">{{ resource.description }}</p>
+                      <a :href="resource.link" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300 flex items-center">
+                          Learn More
+                          <i class="fas fa-arrow-right ml-2"></i>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </section>
 
-        <!-- Footer -->
-        <footer class="bg-gray-900 text-white py-12">
-            <div class="container mx-auto px-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-2xl font-semibold mb-4">Web Trends Explorer Pro 3.0</h3>
-                        <p class="text-gray-400">Empowering designers and developers to create cutting-edge web experiences.</p>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-4">Quick Links</h4>
-                        <ul class="space-y-2">
-                            <li v-for="item in menuItems" :key="item.id">
-                                <a @click="scrollToSection(item.id)" class="hover:text-gray-300 transition duration-300 cursor-pointer">
-                                    {{ item.name }}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-4">Connect</h4>
-                        <div class="flex space-x-4">
-                            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                                <i class="fab fa-twitter text-2xl"></i>
-                            </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                                <i class="fab fa-github text-2xl"></i>
-                            </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                                <i class="fab fa-linkedin text-2xl"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-4">Newsletter</h4>
-                        <form @submit.prevent="subscribeNewsletter" class="flex">
-                            <input type="email" v-model="newsletterEmail" placeholder="Your email" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700 transition-colors duration-300">
-                                Subscribe
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                    <p>&copy; 2024 Web Trends Explorer Pro 3.0. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
+      <!-- Footer -->
+      <footer class="bg-gray-900 text-white py-12">
+          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div>
+                      <h3 class="text-xl sm:text-2xl font-semibold mb-4">Web Trends Explorer Pro 3.0</h3>
+                      <p class="text-gray-400">Empowering designers and developers to create cutting-edge web experiences.</p>
+                  </div>
+                  <div>
+                      <h4 class="text-lg sm:text-xl font-semibold mb-4">Quick Links</h4>
+                      <ul class="space-y-2">
+                          <li v-for="item in menuItems" :key="item.id">
+                              <a @click="scrollToSection(item.id)" class="hover:text-gray-300 transition duration-300 cursor-pointer">
+                                  {{ item.name }}
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div>
+                      <h4 class="text-lg sm:text-xl font-semibold mb-4">Connect</h4>
+                      <div class="flex space-x-4">
+                          <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                              <i class="fab fa-twitter text-2xl"></i>
+                          </a>
+                          <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                              <i class="fab fa-github text-2xl"></i>
+                          </a>
+                          <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                              <i class="fab fa-linkedin text-2xl"></i>
+                          </a>
+                      </div>
+                  </div>
+                  <div>
+                      <h4 class="text-lg sm:text-xl font-semibold mb-4">Newsletter</h4>
+                      <form @submit.prevent="subscribeNewsletter" class="flex">
+                          <input type="email" v-model="newsletterEmail" placeholder="Your email" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                          <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700 transition-colors duration-300">
+                              Subscribe
+                          </button>
+                      </form>
+                  </div>
+              </div>
+              <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+                  <p>&copy; 2024 Web Trends Explorer Pro 3.0. All rights reserved.</p>
+              </div>
+          </div>
+      </footer>
 
-        <!-- Modals -->
-        <!-- Trend Demo Modal -->
-        <div v-if="selectedTrend" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-8 max-w-4xl w-full max-h-screen overflow-y-auto scrollbar-hide">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-3xl font-bold">{{ selectedTrend.title }}</h2>
-                    <button @click="closeTrendDemo" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times text-2xl"></i>
-                    </button>
-                </div>
-                <p class="text-gray-600 mb-6">{{ selectedTrend.description }}</p>
-                <div class="mb-8 bg-gray-100 p-6 rounded-lg">
-                    <h3 class="text-xl font-semibold mb-4">Live Demo</h3>
-                    <div class="trend-demo" v-html="selectedTrend.liveDemo"></div>
-                </div>
-                <div class="mb-8">
-                    <h3 class="text-xl font-semibold mb-4">Code Snippet</h3>
-                    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code>{{ selectedTrend.codeSnippet }}</code></pre>
-                    <button @click="copyCode(selectedTrend.codeSnippet)" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                        <i class="fas fa-copy mr-2"></i>Copy Code
-                    </button>
-                </div>
-                <div>
-                    <h3 class="text-xl font-semibold mb-4">Resources</h3>
-                    <ul class="list-disc list-inside">
-                        <li v-for="resource in selectedTrend.resources" :key="resource.url">
-                            <a :href="resource.url" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
-                                {{ resource.title }}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+      <!-- Modals -->
+      <!-- Trend Demo Modal -->
+      <div v-if="selectedTrend" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-lg p-6 sm:p-8 max-w-4xl w-full max-h-screen overflow-y-auto scrollbar-hide">
+              <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-2xl sm:text-3xl font-bold">{{ selectedTrend.title }}</h2>
+                  <button @click="closeTrendDemo" class="text-gray-500 hover:text-gray-700">
+                      <i class="fas fa-times text-2xl"></i>
+                  </button>
+              </div>
+              <p class="text-gray-600 mb-6">{{ selectedTrend.description }}</p>
+              <div class="mb-8 bg-gray-100 p-6 rounded-lg">
+                  <h3 class="text-xl font-semibold mb-4">Live Demo</h3>
+                  <div class="trend-demo" v-html="selectedTrend.liveDemo"></div>
+              </div>
+              <div class="mb-8">
+                  <h3 class="text-xl font-semibold mb-4">Code Snippet</h3>
+                  <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code>{{ selectedTrend.codeSnippet }}</code></pre>
+                  <button @click="copyCode(selectedTrend.codeSnippet)" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
+                      <i class="fas fa-copy mr-2"></i>Copy Code
+                  </button>
+              </div>
+              <div>
+                  <h3 class="text-xl font-semibold mb-4">Resources</h3>
+                  <ul class="list-disc list-inside">
+                      <li v-for="resource in selectedTrend.resources" :key="resource.url">
+                          <a :href="resource.url" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
+                              {{ resource.title }}
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+
+      <!-- Submit Project Modal -->
+      <div v-if="showSubmitProjectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div class="bg-white rounded-lg p-6 sm:p-8 max-w-2xl w-full">
+              <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-2xl sm:text-3xl font-bold">Submit Your Project</h2>
+                  <button @click="closeSubmitProjectModal" class="text-gray-500 hover:text-gray-700">
+                      <i class="fas fa-times text-2xl"></i>
+                  </button>
+              </div>
+              <form @submit.prevent="submitProject">
+                  <div class="mb-4">
+                      <label for="projectTitle" class="block text-gray-700 text-sm font-bold mb-2">Project Title</label>
+                      <input v-model="newProject.title" type="text" id="projectTitle" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                  </div>
+                  <div class="mb-4">
+                      <label for="projectDescription" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                      <textarea v-model="newProject.description" id="projectDescription" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required></textarea>
+                  </div>
+                  <div class="mb-4">
+                      <label for="projectLink" class="block text-gray-700 text-sm font-bold mb-2">Project Link</label>
+                      <input v-model="newProject.link" type="url" id="projectLink" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                  </div>
+                  <div class="mb-4">
+                      <label for="projectImage" class="block text-gray-700 text-sm font-bold mb-2">Project Image</label>
+                      <input type="file" id="projectImage" @change="handleImageUpload" accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
+                  </div>
+                  <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
+                      <i class="fas fa-paper-plane mr-2"></i>Submit Project
+                  </button>
+              </form>
+          </div>
+      </div>
+  </div>
+
+  <script>
+      const app = Vue.createApp({
+          data() {
+              return {
+                  scrolled: false,
+                  mobileMenuOpen: false,
+                  menuItems: [
+                      { id: 'trends', name: 'Trends' },
+                      { id: 'interactive-playground', name: 'Playground' },
+                      { id: 'ai-assistant', name: 'AI Assistant' },
+                      { id: 'community', name: 'Community' },
+                      { id: 'resources', name: 'Resources' },
+                  ],
+                  trends: [
+                      {
+    id: 1,
+    title: 'Glassmorphism',
+    description: 'Create stunning frosted glass effects in your UI.',
+    image: 'glassmorphism.jpg',
+    category: 'UI Design',
+    liveDemo: `
+        <div class="bg-gradient-to-r from-purple-400 to-pink-500 p-8 rounded-lg">
+            <div class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg">
+                <h3 class="text-white text-2xl font-bold mb-4">Glassmorphism Effect</h3>
+                <p class="text-white text-opacity-80">This is an example of the glassmorphism trend in action.</p>
             </div>
         </div>
-
-        <!-- Submit Project Modal -->
-        <div v-if="showSubmitProjectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-8 max-w-2xl w-full">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-3xl font-bold">Submit Your Project</h2>
-                    <button @click="closeSubmitProjectModal" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times text-2xl"></i>
-                    </button>
-                </div>
-                <form @submit.prevent="submitProject">
-                    <div class="mb-4">
-                        <label for="projectTitle" class="block text-gray-700 text-sm font-bold mb-2">Project Title</label>
-                        <input v-model="newProject.title" type="text" id="projectTitle" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="projectDescription" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                        <textarea v-model="newProject.description" id="projectDescription" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required></textarea>
-                    </div>
-                    <div class="mb-4">
-                        <label for="projectLink" class="block text-gray-700 text-sm font-bold mb-2">Project Link</label>
-                        <input v-model="newProject.link" type="url" id="projectLink" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="projectImage" class="block text-gray-700 text-sm font-bold mb-2">Project Image</label>
-                        <input type="file" id="projectImage" @change="handleImageUpload" accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                    </div>
-                    <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                        <i class="fas fa-paper-plane mr-2"></i>Submit Project
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const app = Vue.createApp({
-            data() {
-                return {
-                    scrolled: false,
-                    mobileMenuOpen: false,
-                    menuItems: [
-                        { id: 'trends', name: 'Trends' },
-                        { id: 'interactive-playground', name: 'Playground' },
-                        { id: 'ai-assistant', name: 'AI Assistant' },
-                        { id: 'community', name: 'Community' },
-                        { id: 'resources', name: 'Resources' },
-                    ],
-                    trends: [
-                        {
-                            id: 1,
-                            title: 'Glassmorphism',
-                            description: 'Create stunning frosted glass effects in your UI.',
-                            image: 'glassmorphism.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                                <div class="bg-gradient-to-r from-purple-400 to-pink-500 p-8 rounded-lg">
-                                    <div class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg">
-                                        <h3 class="text-white text-2xl font-bold mb-4">Glassmorphism Effect</h3>
-                                        <p class="text-white text-opacity-80">This is an example of the glassmorphism trend in action.</p>
-                                    </div>
-                                </div>
-                            `,
-                            codeSnippet: `
+    `,
+    codeSnippet: `
 .glassmorphism {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-                            `,
-                            resources: [
-                                { title: 'Glassmorphism Generator', url: 'https://hype4.academy/tools/glassmorphism-generator' },
-                                { title: 'CSS-Tricks: Glassmorphism', url: 'https://css-tricks.com/glassmorphism-create-a-glass-effect-with-html-and-css/' },
-                            ],
-                        },
-                        {
-                            id: 2,
-                            title: 'Neumorphism',
-                            description: 'Soft UI design with subtle shadows for a modern look.',
-                            image: 'neumorphism.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                              <div class="bg-gray-200 p-8 rounded-lg">
-                                <div class="neumorphism-box">
-                                  <h3 class="text-gray-800 text-2xl font-bold mb-4">Neumorphism Design</h3>
-                                  <p class="text-gray-600">Soft and elegant user interface elements.</p>
-                                </div>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .neumorphism-box {
-                          background: #e0e0e0;
-                          border-radius: 50px;
-                          box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-                          padding: 20px;
-                        }
-                            `,
-                            resources: [
-                              { title: 'Neumorphism.io', url: 'https://neumorphism.io/' },
-                              { title: 'CSS-Tricks: Neumorphism', url: 'https://css-tricks.com/neumorphism-and-css/' },
-                            ],
-                          },
-                          {
-                            id: 3,
-                            title: 'Micro-interactions',
-                            description: 'Small, engaging animations that enhance user experience.',
-                            image: 'micro-interactions.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                              <div class="bg-white p-8 rounded-lg">
-                                <button class="micro-interaction-btn">
-                                  <span>Hover me</span>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                                </button>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .micro-interaction-btn {
-                          display: flex;
-                          align-items: center;
-                          gap: 8px;
-                          padding: 10px 20px;
-                          background-color: #3498db;
-                          color: white;
-                          border: none;
-                          border-radius: 5px;
-                          cursor: pointer;
-                          transition: all 0.3s ease;
-                        }
-                        
-                        .micro-interaction-btn:hover {
-                          background-color: #2980b9;
-                          transform: translateX(5px);
-                        }
-                        
-                        .micro-interaction-btn svg {
-                          transition: transform 0.3s ease;
-                        }
-                        
-                        .micro-interaction-btn:hover svg {
-                          transform: translateX(5px);
-                        }
-                            `,
-                            resources: [
-                              { title: 'Microinteractions: Design with Details', url: 'https://www.nngroup.com/articles/microinteractions/' },
-                              { title: 'The Importance of Micro-Interactions', url: 'https://uxdesign.cc/micro-interactions-why-when-and-how-to-use-them-to-boost-the-ux-17094b3baaa0' },
-                            ],
-                          },
-                          {
-                            id: 4,
-                            title: 'Dark Mode Toggle',
-                            description: 'Implement a smooth dark mode transition for better user experience.',
-                            image: 'dark-mode-toggle.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                              <div class="dark-mode-demo">
-                                <div class="content">
-                                  <h3>Dark Mode Toggle</h3>
-                                  <p>Click the switch to toggle dark mode.</p>
-                                </div>
-                                <label class="switch">
-                                  <input type="checkbox" id="darkModeToggle">
-                                  <span class="slider round"></span>
-                                </label>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .dark-mode-demo {
-                          padding: 20px;
-                          transition: background-color 0.3s, color 0.3s;
-                        }
-                        
-                        .dark-mode-demo.dark {
-                          background-color: #333;
-                          color: #fff;
-                        }
-                        
-                        .switch {
-                          position: relative;
-                          display: inline-block;
-                          width: 60px;
-                          height: 34px;
-                        }
-                        
-                        .switch input {
-                          opacity: 0;
-                          width: 0;
-                          height: 0;
-                        }
-                        
-                        .slider {
-                          position: absolute;
-                          cursor: pointer;
-                          top: 0;
-                          left: 0;
-                          right: 0;
-                          bottom: 0;
-                          background-color: #ccc;
-                          transition: .4s;
-                        }
-                        
-                        .slider:before {
-                          position: absolute;
-                          content: "";
-                          height: 26px;
-                          width: 26px;
-                          left: 4px;
-                          bottom: 4px;
-                          background-color: white;
-                          transition: .4s;
-                        }
-                        
-                        input:checked + .slider {
-                          background-color: #2196F3;
-                        }
-                        
-                        input:checked + .slider:before {
-                          transform: translateX(26px);
-                        }
-                        
-                        .slider.round {
-                          border-radius: 34px;
-                        }
-                        
-                        .slider.round:before {
-                          border-radius: 50%;
-                        }
-                            `,
-                            resources: [
-                              { title: 'Implementing Dark Mode', url: 'https://css-tricks.com/a-complete-guide-to-dark-mode-on-the-web/' },
-                              { title: 'Dark Mode UI Design', url: 'https://uxplanet.org/8-tips-for-dark-theme-design-8dfc2f8f7ab6' },
-                            ],
-                          },
-                          {
-                            id: 5,
-                            title: 'Animated Gradients',
-                            description: 'Create eye-catching animated gradient backgrounds.',
-                            image: 'animated-gradients.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                              <div class="animated-gradient">
-                                <h3>Animated Gradient Background</h3>
-                                <p>Watch the colors shift and change.</p>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .animated-gradient {
-                          width: 100%;
-                          height: 300px;
-                          color: white;
-                          display: flex;
-                          flex-direction: column;
-                          justify-content: center;
-                          align-items: center;
-                          background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-                          background-size: 400% 400%;
-                          animation: gradient 15s ease infinite;
-                        }
-                        
-                        @keyframes gradient {
-                          0% {
-                            background-position: 0% 50%;
-                          }
-                          50% {
-                            background-position: 100% 50%;
-                          }
-                          100% {
-                            background-position: 0% 50%;
-                          }
-                        }
-                            `,
-                            resources: [
-                              { title: 'CSS Gradient Animator', url: 'https://www.gradient-animator.com/' },
-                              { title: 'Animated Gradients in CSS', url: 'https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759' },
-                            ],
-                          },
-                          {
-                            id: 6,
-                            title: 'Parallax Scrolling',
-                            description: 'Create depth and immersion with parallax scrolling effects.',
-                            image: 'parallax-scrolling.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                              <div class="parallax-container">
-                                <div class="parallax-layer back">
-                                  <h2>Background Layer</h2>
-                                </div>
-                                <div class="parallax-layer middle">
-                                  <h2>Middle Layer</h2>
-                                </div>
-                                <div class="parallax-layer front">
-                                  <h2>Foreground Layer</h2>
-                                </div>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .parallax-container {
-                          height: 100vh;
-                          overflow-x: hidden;
-                          overflow-y: auto;
-                          perspective: 1px;
-                        }
-                        
-                        .parallax-layer {
-                          position: absolute;
-                          top: 0;
-                          left: 0;
-                          right: 0;
-                          bottom: 0;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        }
-                        
-                        .back {
-                          transform: translateZ(-2px) scale(3);
-                        }
-                        
-                        .middle {
-                          transform: translateZ(-1px) scale(2);
-                        }
-                        
-                        .front {
-                          transform: translateZ(0);
-                        }
-                            `,
-                            resources: [
-                              { title: 'Simple Parallax Scrolling Tutorial', url: 'https://medium.com/@dailyfire/pure-css-parallax-simple-tricks-da102d0ffdb9' },
-                              { title: 'Parallax Scrolling Examples', url: 'https://bashooka.com/coding/parallax-scrolling-websites/' },
-                            ],
-                          },
-                          {
-                            id: 7,
-                            title: 'Glassmorphism Cards',
-                            description: 'Create stunning card designs with a glassmorphism effect.',
-                            image: 'glassmorphism-cards.jpg',
-                            category: 'UI Design',
-                            liveDemo: `
-                              <div class="glassmorphism-bg">
-                                <div class="glassmorphism-card">
-                                  <h3>Glassmorphism Card</h3>
-                                  <p>A modern and elegant card design.</p>
-                                </div>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .glassmorphism-bg {
-                          background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-                          min-height: 100vh;
-                          display: flex;
-                          align-items: center;
-                          justify-content: center;
-                        }
-                        
-                        .glassmorphism-card {
-                          background: rgba(255, 255, 255, 0.2);
-                          backdrop-filter: blur(10px);
-                          border-radius: 10px;
-                          padding: 20px;
-                          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                          color: white;
-                          max-width: 300px;
-                        }
-                            `,
-                            resources: [
-                              { title: 'Glassmorphism in User Interfaces', url: 'https://uxdesign.cc/glassmorphism-in-user-interfaces-1f39bb1308c9' },
-                              { title: 'CSS Glassmorphism Generator', url: 'https://ui.glass/generator/' },
-                            ],
-                          },
-                          {
-                            id: 8,
-                            title: 'Gradient Text',
-                            description: 'Apply eye-catching gradients to text elements.',
-                            image: 'gradient-text.jpg',
-                            category: 'Typography',
-                            liveDemo: `
-                              <div class="gradient-text-container">
-                                <h1 class="gradient-text">Gradient Text</h1>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .gradient-text-container {
-                          background-color: #1a1a1a;
-                          padding: 40px;
-                          display: flex;
-                          justify-content: center;
-                          align-items: center;
-                        }
-                        
-                        .gradient-text {
-                          font-size: 4rem;
-                          font-weight: bold;
-                          background: linear-gradient(45deg, #ff00ff, #00ffff);
-                          -webkit-background-clip: text;
-                          -webkit-text-fill-color: transparent;
-                          background-clip: text;
-                          text-fill-color: transparent;
-                        }
-                            `,
-                            resources: [
-                              { title: 'CSS Gradient Text Tutorial', url: 'https://css-tricks.com/snippets/css/gradient-text/' },
-                              { title: 'Colorful Typography in Web Design', url: 'https://www.smashingmagazine.com/2021/03/css-generators/' },
-                            ],
-                          },
-                          {
-                            id: 9,
-                            title: 'Morphing SVG',
-                            description: 'Create smooth transitions between SVG shapes.',
-                            image: 'morphing-svg.jpg',
-                            category: 'Animation',
-                            liveDemo: `
-                              <div class="morphing-svg-container">
-                                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                  <path fill="#ff5252" d="M0,50 a1,1 0 0,0 100,0">
-                                    <animate
-                                      attributeName="d"
-                                      dur="5s"
-                                      repeatCount="indefinite"
-                                      values="M0,50 a1,1 0 0,0 100,0;
-                                              M50,0 a1,1 0 0,0 0,100;
-                                              M100,50 a1,1 0 0,0 -100,0;
-                                              M50,100 a1,1 0 0,0 0,-100;
-                                              M0,50 a1,1 0 0,0 100,0"
-                                    />
-                                  </path>
-                                </svg>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .morphing-svg-container {
-                          width: 200px;
-                          height: 200px;
-                          background-color: #f0f0f0;
-                          display: flex;
-                          justify-content: center;
-                          align-items: center;
-                        }
-                        
-                        .morphing-svg-container svg {
-                          width: 100px;
-                          height: 100px;
-                        }
-                            `,
-                            resources: [
-                              { title: 'SVG Morphing with JavaScript', url: 'https://css-tricks.com/svg-shape-morphing-works/' },
-                              { title: 'GSAP MorphSVG Plugin', url: 'https://greensock.com/docs/v3/Plugins/MorphSVGPlugin' },
-                            ],
-                          },
-                          {
-                            id: 10,
-                            title: 'Animated Checkboxes',
-                            description: 'Enhance user interaction with animated checkbox designs.',
-                            image: 'animated-checkboxes.jpg',
-                            category: 'Form Design',
-                            liveDemo: `
-                              <div class="animated-checkbox-container">
-                                <label class="animated-checkbox">
-                                  <input type="checkbox">
-                                  <span class="checkmark"></span>
-                                  Animated Checkbox
-                                </label>
-                              </div>
-                            `,
-                            codeSnippet: `
-                        .animated-checkbox {
-                          display: block;
-                          position: relative;
-                          padding-left: 35px;
-                          margin-bottom: 12px;
-                          cursor: pointer;
-                          font-size: 18px;
-                          user-select: none;
-                        }
-                        
-                        .animated-checkbox input {
-                          position: absolute;
-                          opacity: 0;
-                          cursor: pointer;
-                          height: 0;
-                          width: 0;
-                        }
-                        
-                        .checkmark {
-                          position: absolute;
-                          top: 0;
-                          left: 0;
-                          height: 25px;
-                          width: 25px;
-                          background-color: #eee;
-                          border-radius: 4px;
-                          transition: all 0.3s ease;
-                        }
-                        
-                        .animated-checkbox:hover input ~ .checkmark {
-                          background-color: #ccc;
-                        }
-                          .animated-checkbox input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.animated-checkbox input:checked ~ .checkmark:after {
-  display: block;
-}
-
-.animated-checkbox .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-  animation: checkmark-appear 0.4s ease;
-}
-
-@keyframes checkmark-appear {
-  0% {
-    opacity: 0;
-    transform: rotate(45deg) scale(0);
-  }
-  100% {
-    opacity: 1;
-    transform: rotate(45deg) scale(1);
-  }
+background: rgba(255, 255, 255, 0.2);
+backdrop-filter: blur(10px);
+border-radius: 10px;
+padding: 20px;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
     `,
     resources: [
-      { title: 'CSS Animated Checkboxes', url: 'https://freefrontend.com/css-checkboxes/' },
-      { title: 'Accessible Custom Checkboxes', url: 'https://css-tricks.com/custom-styling-form-inputs-with-modern-css-features/' },
+        { title: 'Glassmorphism Generator', url: 'https://hype4.academy/tools/glassmorphism-generator' },
+        { title: 'CSS-Tricks: Glassmorphism', url: 'https://css-tricks.com/glassmorphism-create-a-glass-effect-with-html-and-css/' },
+    ],
+},
+{
+    id: 2,
+    title: 'Neumorphism',
+    description: 'Soft UI design with subtle shadows for a modern look.',
+    image: 'neumorphism.jpg',
+    category: 'UI Design',
+    liveDemo: `
+      <div class="bg-gray-200 p-8 rounded-lg">
+        <div class="neumorphism-box">
+          <h3 class="text-gray-800 text-2xl font-bold mb-4">Neumorphism Design</h3>
+          <p class="text-gray-600">Soft and elegant user interface elements.</p>
+        </div>
+      </div>
+    `,
+    codeSnippet: `
+.neumorphism-box {
+  background: #e0e0e0;
+  border-radius: 50px;
+  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+  padding: 20px;
+}
+    `,
+    resources: [
+      { title: 'Neumorphism.io', url: 'https://neumorphism.io/' },
+      { title: 'CSS-Tricks: Neumorphism', url: 'https://css-tricks.com/neumorphism-and-css/' },
     ],
   },
   {
-    id: 11,
-    title: 'Animated Hamburger Menu',
-    description: 'Create an engaging animated hamburger menu icon.',
-    image: 'animated-hamburger.jpg',
-    category: 'Navigation',
+    id: 3,
+    title: 'Micro-interactions',
+    description: 'Small, engaging animations that enhance user experience.',
+    image: 'micro-interactions.jpg',
+    category: 'UI Design',
     liveDemo: `
-      <div class="hamburger-container">
-        <button class="hamburger" id="hamburger-toggle">
-          <span></span>
-          <span></span>
-          <span></span>
+      <div class="bg-white p-8 rounded-lg">
+        <button class="micro-interaction-btn">
+          <span>Hover me</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
     `,
     codeSnippet: `
-.hamburger {
+.micro-interaction-btn {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 2rem;
-  height: 2rem;
-  background: transparent;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
-  padding: 0;
+  transition: all 0.3s ease;
 }
 
-.hamburger span {
-  width: 2rem;
-  height: 0.25rem;
-  background: #333;
-  border-radius: 10px;
-  transition: all 0.3s linear;
-  position: relative;
-  transform-origin: 1px;
+.micro-interaction-btn:hover {
+  background-color: #2980b9;
+  transform: translateX(5px);
 }
 
-.hamburger.open span:first-child {
-  transform: rotate(45deg);
+.micro-interaction-btn svg {
+  transition: transform 0.3s ease;
 }
 
-.hamburger.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg);
+.micro-interaction-btn:hover svg {
+  transform: translateX(5px);
 }
     `,
     resources: [
-      { title: 'Animated Hamburger Menu Icons', url: 'https://github.com/jonsuh/hamburgers' },
-      { title: 'CSS Hamburger Menu Tutorial', url: 'https://css-tricks.com/hamburger-menu-with-a-side-of-react-hooks-and-styled-components/' },
+      { title: 'Microinteractions: Design with Details', url: 'https://www.nngroup.com/articles/microinteractions/' },
+      { title: 'The Importance of Micro-Interactions', url: 'https://uxdesign.cc/micro-interactions-why-when-and-how-to-use-them-to-boost-the-ux-17094b3baaa0' },
     ],
   },
   {
-    id: 12,
-    title: 'Floating Labels',
-    description: 'Implement elegant floating labels for form inputs.',
-    image: 'floating-labels.jpg',
-    category: 'Form Design',
+    id: 4,
+    title: 'Dark Mode Toggle',
+    description: 'Implement a smooth dark mode transition for better user experience.',
+    image: 'dark-mode-toggle.jpg',
+    category: 'UI Design',
     liveDemo: `
-      <div class="floating-label-container">
-        <div class="floating-label">
-          <input type="text" id="name" placeholder=" " required>
-          <label for="name">Name</label>
+      <div class="dark-mode-demo">
+        <div class="content">
+          <h3>Dark Mode Toggle</h3>
+          <p>Click the switch to toggle dark mode.</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider round"></span>
+        </label>
+      </div>
+    `,
+    codeSnippet: `
+.dark-mode-demo {
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode-demo.dark {
+  background-color: #333;
+  color: #fff;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    `,
+    resources: [
+      { title: 'Implementing Dark Mode', url: 'https://css-tricks.com/a-complete-guide-to-dark-mode-on-the-web/' },
+      { title: 'Dark Mode UI Design', url: 'https://uxplanet.org/8-tips-for-dark-theme-design-8dfc2f8f7ab6' },
+    ],
+  },
+  {
+    id: 5,
+    title: 'Animated Gradients',
+    description: 'Create eye-catching animated gradient backgrounds.',
+    image: 'animated-gradients.jpg',
+    category: 'UI Design',
+    liveDemo: `
+      <div class="animated-gradient">
+        <h3>Animated Gradient Background</h3>
+        <p>Watch the colors shift and change.</p>
+      </div>
+    `,
+    codeSnippet: `
+.animated-gradient {
+  width: 100%;
+  height: 300px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+    `,
+    resources: [
+      { title: 'CSS Gradient Animator', url: 'https://www.gradient-animator.com/' },
+      { title: 'Animated Gradients in CSS', url: 'https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759' },
+    ],
+  },
+  {
+    id: 6,
+    title: 'Parallax Scrolling',
+    description: 'Create depth and immersion with parallax scrolling effects.',
+    image: 'parallax-scrolling.jpg',
+    category: 'UI Design',
+    liveDemo: `
+      <div class="parallax-container">
+        <div class="parallax-layer back">
+          <h2>Background Layer</h2>
+        </div>
+        <div class="parallax-layer middle">
+          <h2>Middle Layer</h2>
+        </div>
+        <div class="parallax-layer front">
+          <h2>Foreground Layer</h2>
         </div>
       </div>
     `,
     codeSnippet: `
-.floating-label {
+.parallax-container {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  perspective: 1px;
+}
+
+.parallax-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back {
+  transform: translateZ(-2px) scale(3);
+}
+
+.middle {
+  transform: translateZ(-1px) scale(2);
+}
+
+.front {
+  transform: translateZ(0);
+}
+    `,
+    resources: [
+      { title: 'Simple Parallax Scrolling Tutorial', url: 'https://medium.com/@dailyfire/pure-css-parallax-simple-tricks-da102d0ffdb9' },
+      { title: 'Parallax Scrolling Examples', url: 'https://bashooka.com/coding/parallax-scrolling-websites/' },
+    ],
+  },
+  {
+    id: 7,
+    title: 'Glassmorphism Cards',
+    description: 'Create stunning card designs with a glassmorphism effect.',
+    image: 'glassmorphism-cards.jpg',
+    category: 'UI Design',
+    liveDemo: `
+      <div class="glassmorphism-bg">
+        <div class="glassmorphism-card">
+          <h3>Glassmorphism Card</h3>
+          <p>A modern and elegant card design.</p>
+        </div>
+      </div>
+    `,
+    codeSnippet: `
+.glassmorphism-bg {
+  background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glassmorphism-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+  max-width: 300px;
+}
+    `,
+    resources: [
+      { title: 'Glassmorphism in User Interfaces', url: 'https://uxdesign.cc/glassmorphism-in-user-interfaces-1f39bb1308c9' },
+      { title: 'CSS Glassmorphism Generator', url: 'https://ui.glass/generator/' },
+    ],
+  },
+  {
+    id: 8,
+    title: 'Gradient Text',
+    description: 'Apply eye-catching gradients to text elements.',
+    image: 'gradient-text.jpg',
+    category: 'Typography',
+    liveDemo: `
+      <div class="gradient-text-container">
+        <h1 class="gradient-text">Gradient Text</h1>
+      </div>
+    `,
+    codeSnippet: `
+.gradient-text-container {
+  background-color: #1a1a1a;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gradient-text {
+  font-size: 4rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff00ff, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+    `,
+    resources: [
+      { title: 'CSS Gradient Text Tutorial', url: 'https://css-tricks.com/snippets/css/gradient-text/' },
+      { title: 'Colorful Typography in Web Design', url: 'https://www.smashingmagazine.com/2021/03/css-generators/' },
+    ],
+  },
+  {
+    id: 9,
+    title: 'Morphing SVG',
+    description: 'Create smooth transitions between SVG shapes.',
+    image: 'morphing-svg.jpg',
+    category: 'Animation',
+    liveDemo: `
+      <div class="morphing-svg-container">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#ff5252" d="M0,50 a1,1 0 0,0 100,0">
+            <animate
+              attributeName="d"
+              dur="5s"
+              repeatCount="indefinite"
+              values="M0,50 a1,1 0 0,0 100,0;
+                      M50,0 a1,1 0 0,0 0,100;
+                      M100,50 a1,1 0 0,0 -100,0;
+                      M50,100 a1,1 0 0,0 0,-100;
+                      M0,50 a1,1 0 0,0 100,0"
+            />
+          </path>
+        </svg>
+      </div>
+    `,
+    codeSnippet: `
+.morphing-svg-container {
+  width: 200px;
+  height: 200px;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.morphing-svg-container svg {
+  width: 100px;
+  height: 100px;
+}
+    `,
+    resources: [
+      { title: 'SVG Morphing with JavaScript', url: 'https://css-tricks.com/svg-shape-morphing-works/' },
+      { title: 'GSAP MorphSVG Plugin', url: 'https://greensock.com/docs/v3/Plugins/MorphSVGPlugin' },
+    ],
+  },
+  {
+    id: 10,
+    title: 'Animated Checkboxes',
+    description: 'Enhance user interaction with animated checkbox designs.',
+    image: 'animated-checkboxes.jpg',
+    category: 'Form Design',
+    liveDemo: `
+      <div class="animated-checkbox-container">
+        <label class="animated-checkbox">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Animated Checkbox
+        </label>
+      </div>
+    `,
+    codeSnippet: `
+.animated-checkbox {
+  display: block;
   position: relative;
-  margin-bottom: 20px;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+.animated-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.animated-checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+  .animated-checkbox input:checked ~ .checkmark {
+background-color: #2196F3;
+}
+
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+.animated-checkbox input:checked ~ .checkmark:after {
+display: block;
+}
+
+.animated-checkbox .checkmark:after {
+left: 9px;
+top: 5px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 3px 3px 0;
+transform: rotate(45deg);
+animation: checkmark-appear 0.4s ease;
+}
+
+@keyframes checkmark-appear {
+0% {
+opacity: 0;
+transform: rotate(45deg) scale(0);
+}
+100% {
+opacity: 1;
+transform: rotate(45deg) scale(1);
+}
+}
+`,
+resources: [
+{ title: 'CSS Animated Checkboxes', url: 'https://freefrontend.com/css-checkboxes/' },
+{ title: 'Accessible Custom Checkboxes', url: 'https://css-tricks.com/custom-styling-form-inputs-with-modern-css-features/' },
+],
+},
+{
+id: 11,
+title: 'Animated Hamburger Menu',
+description: 'Create an engaging animated hamburger menu icon.',
+image: 'animated-hamburger.jpg',
+category: 'Navigation',
+liveDemo: `
+<div class="hamburger-container">
+<button class="hamburger" id="hamburger-toggle">
+<span></span>
+<span></span>
+<span></span>
+</button>
+</div>
+`,
+codeSnippet: `
+.hamburger {
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+width: 2rem;
+height: 2rem;
+background: transparent;
+border: none;
+cursor: pointer;
+padding: 0;
+}
+
+.hamburger span {
+width: 2rem;
+height: 0.25rem;
+background: #333;
+border-radius: 10px;
+transition: all 0.3s linear;
+position: relative;
+transform-origin: 1px;
+}
+
+.hamburger.open span:first-child {
+transform: rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+transform: rotate(-45deg);
+}
+`,
+resources: [
+{ title: 'Animated Hamburger Menu Icons', url: 'https://github.com/jonsuh/hamburgers' },
+{ title: 'CSS Hamburger Menu Tutorial', url: 'https://css-tricks.com/hamburger-menu-with-a-side-of-react-hooks-and-styled-components/' },
+],
+},
+{
+id: 12,
+title: 'Floating Labels',
+description: 'Implement elegant floating labels for form inputs.',
+image: 'floating-labels.jpg',
+category: 'Form Design',
+liveDemo: `
+<div class="floating-label-container">
+<div class="floating-label">
+<input type="text" id="name" placeholder=" " required>
+<label for="name">Name</label>
+</div>
+</div>
+`,
+codeSnippet: `
+.floating-label {
+position: relative;
+margin-bottom: 20px;
 }
 
 .floating-label input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: all 0.3s ease;
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 16px;
+transition: all 0.3s ease;
 }
 
 .floating-label label {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #999;
-  pointer-events: none;
-  transition: all 0.3s ease;
+position: absolute;
+top: 50%;
+left: 10px;
+transform: translateY(-50%);
+font-size: 16px;
+color: #999;
+pointer-events: none;
+transition: all 0.3s ease;
 }
 
 .floating-label input:focus + label,
 .floating-label input:not(:placeholder-shown) + label {
-  top: 0;
-  font-size: 12px;
-  color: #333;
-  background-color: white;
-  padding: 0 5px;
+top: 0;
+font-size: 12px;
+color: #333;
+background-color: white;
+padding: 0 5px;
 }
 
 .floating-label input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+border-color: #007bff;
+box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
-    `,
-    resources: [
-      { title: 'CSS-only Floating Labels', url: 'https://css-tricks.com/float-labels-css/' },
-      { title: 'Accessible Floating Labels', url: 'https://medium.com/@eugenioluminari/accessible-floating-labels-55917786c3f1' },
-    ],
-  },
-  {
-    id: 13,
-    title: 'Skeleton Loading',
-    description: 'Implement skeleton screens for better perceived performance.',
-    image: 'skeleton-loading.jpg',
-    category: 'UX Design',
-    liveDemo: `
-      <div class="skeleton-container">
-        <div class="skeleton-card">
-          <div class="skeleton-image"></div>
-          <div class="skeleton-text"></div>
-          <div class="skeleton-text"></div>
-        </div>
-      </div>
-    `,
-    codeSnippet: `
+`,
+resources: [
+{ title: 'CSS-only Floating Labels', url: 'https://css-tricks.com/float-labels-css/' },
+{ title: 'Accessible Floating Labels', url: 'https://medium.com/@eugenioluminari/accessible-floating-labels-55917786c3f1' },
+],
+},
+{
+id: 13,
+title: 'Skeleton Loading',
+description: 'Implement skeleton screens for better perceived performance.',
+image: 'skeleton-loading.jpg',
+category: 'UX Design',
+liveDemo: `
+<div class="skeleton-container">
+<div class="skeleton-card">
+<div class="skeleton-image"></div>
+<div class="skeleton-text"></div>
+<div class="skeleton-text"></div>
+</div>
+</div>
+`,
+codeSnippet: `
 .skeleton-card {
-  width: 300px;
-  padding: 20px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
+width: 300px;
+padding: 20px;
+background-color: #f0f0f0;
+border-radius: 8px;
 }
 
 .skeleton-image {
-  width: 100%;
-  height: 200px;
-  background-color: #e0e0e0;
-  margin-bottom: 15px;
-  border-radius: 4px;
+width: 100%;
+height: 200px;
+background-color: #e0e0e0;
+margin-bottom: 15px;
+border-radius: 4px;
 }
 
 .skeleton-text {
-  height: 20px;
-  background-color: #e0e0e0;
-  margin-bottom: 10px;
-  border-radius: 4px;
+height: 20px;
+background-color: #e0e0e0;
+margin-bottom: 10px;
+border-radius: 4px;
 }
 
 .skeleton-text:last-child {
-  width: 80%;
+width: 80%;
 }
 
 @keyframes skeleton-loading {
-  0% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
-  }
+0% {
+background-position: 100% 50%;
+}
+100% {
+background-position: 0 50%;
+}
 }
 
 .skeleton-card * {
-  background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s infinite;
+background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+background-size: 200% 100%;
+animation: skeleton-loading 1.5s infinite;
 }
-    `,
-    resources: [
-      { title: 'Skeleton Screen Patterns', url: 'https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a' },
-      { title: 'Creating Skeleton Screens with CSS', url: 'https://css-tricks.com/building-skeleton-screens-css-custom-properties/' },
-    ],
-  },
-  {
-    id: 14,
-    title: '3D Card Flip',
-    description: 'Create an interactive 3D card flip effect.',
-    image: '3d-card-flip.jpg',
-    category: 'Animation',
-    liveDemo: `
-      <div class="flip-card-container">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <h3>Front Side</h3>
-            </div>
-            <div class="flip-card-back">
-              <h3>Back Side</h3>
-            </div>
-          </div>
-        </div>
-      </div>
-    `,
-    codeSnippet: `
+`,
+resources: [
+{ title: 'Skeleton Screen Patterns', url: 'https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a' },
+{ title: 'Creating Skeleton Screens with CSS', url: 'https://css-tricks.com/building-skeleton-screens-css-custom-properties/' },
+],
+},
+{
+id: 14,
+title: '3D Card Flip',
+description: 'Create an interactive 3D card flip effect.',
+image: '3d-card-flip.jpg',
+category: 'Animation',
+liveDemo: `
+<div class="flip-card-container">
+<div class="flip-card">
+<div class="flip-card-inner">
+<div class="flip-card-front">
+<h3>Front Side</h3>
+</div>
+<div class="flip-card-back">
+<h3>Back Side</h3>
+</div>
+</div>
+</div>
+</div>
+`,
+codeSnippet: `
 .flip-card {
-  background-color: transparent;
-  width: 300px;
-  height: 200px;
-  perspective: 1000px;
+background-color: transparent;
+width: 300px;
+height: 200px;
+perspective: 1000px;
 }
 
 .flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
+position: relative;
+width: 100%;
+height: 100%;
+text-align: center;
+transition: transform 0.6s;
+transform-style: preserve-3d;
 }
 
 .flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
+transform: rotateY(180deg);
 }
 
 .flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
+position: absolute;
+width: 100%;
+height: 100%;
+backface-visibility: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 8px;
 }
 
 .flip-card-front {
-  background-color: #bbb;
-  color: black;
+background-color: #bbb;
+color: black;
 }
 
 .flip-card-back {
-  background-color: #2980b9;
-  color: white;
-  transform: rotateY(180deg);
+background-color: #2980b9;
+color: white;
+transform: rotateY(180deg);
 }
-    `,
-    resources: [
-      { title: '3D Card Flip Tutorial', url: 'https://3dtransforms.desandro.com/card-flip' },
-      { title: 'CSS 3D Transforms', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate3d' },
-    ],
-  },
-  {
-    id: 15,
-    title: 'Animated Progress Bar',
-    description: 'Create visually appealing animated progress bars.',
-    image: 'animated-progress-bar.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="progress-container">
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
-      </div>
-    `,
-    codeSnippet: `
+`,
+resources: [
+{ title: '3D Card Flip Tutorial', url: 'https://3dtransforms.desandro.com/card-flip' },
+{ title: 'CSS 3D Transforms', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate3d' },
+],
+},
+{
+id: 15,
+title: 'Animated Progress Bar',
+description: 'Create visually appealing animated progress bars.',
+image: 'animated-progress-bar.jpg',
+category: 'UI Design',
+liveDemo: `
+<div class="progress-container">
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
+</div>
+`,
+codeSnippet: `
 .progress-container {
-  width: 300px;
-  background-color: #f0f0f0;
-  border-radius: 20px;
-  padding: 3px;
+width: 300px;
+background-color: #f0f0f0;
+border-radius: 20px;
+padding: 3px;
 }
 
 .progress-bar {
-  height: 20px;
-  background-color: #4CAF50;
-  border-radius: 20px;
-  width: 0;
-  transition: width 1s ease-in-out;
+height: 20px;
+background-color: #4CAF50;
+border-radius: 20px;
+width: 0;
+transition: width 1s ease-in-out;
 }
 
 .progress-fill {
-  height: 100%;
-  background-image: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.15) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.15) 75%,
-    transparent 75%,
-    transparent
-  );
-  background-size: 40px 40px;
-  animation: stripes 1s linear infinite;
+height: 100%;
+background-image: linear-gradient(
+45deg,
+rgba(255, 255, 255, 0.15) 25%,
+transparent 25%,
+transparent 50%,
+rgba(255, 255, 255, 0.15) 50%,
+rgba(255, 255, 255, 0.15) 75%,
+transparent 75%,
+transparent
+);
+background-size: 40px 40px;
+animation: stripes 1s linear infinite;
 }
 
 @keyframes stripes {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 40px 0;
-  }
+0% {
+background-position: 0 0;
 }
-    `,
-    resources: [
-      { title: 'CSS Progress Bars', url: 'https://css-tricks.com/css3-progress-bars/' },
-      { title: 'Animated Progress Bar Designs', url: 'https://freefrontend.com/css-progress-bars/' },
-    ],
-  },
-  {
-    id: 16,
-    title: 'Tooltip Animations',
-    description: 'Create engaging tooltip animations for better user experience.',
-    image: 'tooltip-animations.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="tooltip-container">
-        <button class="tooltip-trigger">Hover me
-          <span class="tooltip">I'm an animated tooltip!</span>
-        </button>
-      </div>
-    `,
-    codeSnippet: `
+100% {
+background-position: 40px 0;
+}
+}
+`,
+resources: [
+{ title: 'CSS Progress Bars', url: 'https://css-tricks.com/css3-progress-bars/' },
+{ title: 'Animated Progress Bar Designs', url: 'https://freefrontend.com/css-progress-bars/' },
+],
+},
+{
+id: 16,
+title: 'Tooltip Animations',
+description: 'Create engaging tooltip animations for better user experience.',
+image: 'tooltip-animations.jpg',
+category: 'UI Design',
+liveDemo: `
+<div class="tooltip-container">
+<button class="tooltip-trigger">Hover me
+<span class="tooltip">I'm an animated tooltip!</span>
+</button>
+</div>
+`,
+codeSnippet: `
 .tooltip-trigger {
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+position: relative;
+display: inline-block;
+padding: 10px 20px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
 }
 
 .tooltip {
-  visibility: hidden;
-  width: 120px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.3s;
-  transform: translateY(10px);
+visibility: hidden;
+width: 120px;
+background-color: #333;
+color: #fff;
+text-align: center;
+border-radius: 6px;
+padding: 5px;
+position: absolute;
+z-index: 1;
+bottom: 125%;
+left: 50%;
+margin-left: -60px;
+opacity: 0;
+transition: opacity 0.3s, transform 0.3s;
+transform: translateY(10px);
 }
 
 .tooltip-trigger:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0);
+visibility: visible;
+opacity: 1;
+transform: translateY(0);
 }
 
 .tooltip::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #333 transparent transparent transparent;
+content: "";
+position: absolute;
+top: 100%;
+left: 50%;
+margin-left: -5px;
+border-width: 5px;
+border-style: solid;
+border-color: #333 transparent transparent transparent;
 }
-    `,
-    resources: [
-      { title: 'CSS Tooltip Tutorial', url: 'https://www.w3schools.com/css/css_tooltip.asp' },
-      { title: 'Advanced CSS Tooltip Techniques', url: 'https://css-tricks.com/bubble-point-tooltips-with-css3-jquery/' },
-    ],
-  },
-  {
-    id: 17,
-    title: 'Scroll-Triggered Animations',
-    description: 'Create animations that trigger as the user scrolls down the page.',
-    image: 'scroll-animations.jpg',
-    category: 'Animation',
-    liveDemo: `
-      <div class="scroll-animation-container">
-        <div class="scroll-element fade-in">I fade in as you scroll</div>
-        <div class="scroll-element slide-in">I slide in as you scroll</div>
-      </div>
-    `,
-    codeSnippet: `
+`,
+resources: [
+{ title: 'CSS Tooltip Tutorial', url: 'https://www.w3schools.com/css/css_tooltip.asp' },
+{ title: 'Advanced CSS Tooltip Techniques', url: 'https://css-tricks.com/bubble-point-tooltips-with-css3-jquery/' },
+],
+},
+{
+id: 17,
+title: 'Scroll-Triggered Animations',
+description: 'Create animations that trigger as the user scrolls down the page.',
+image: 'scroll-animations.jpg',
+category: 'Animation',
+liveDemo: `
+<div class="scroll-animation-container">
+<div class="scroll-element fade-in">I fade in as you scroll</div>
+<div class="scroll-element slide-in">I slide in as you scroll</div>
+</div>
+`,
+codeSnippet: `
 .scroll-element {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+opacity: 0;
+transform: translateY(20px);
+transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .scroll-element.visible {
-  opacity: 1;
-  transform: translateY(0);
+opacity: 1;
+transform: translateY(0);
 }
 
 .fade-in {
-  transition-delay: 0.2s;
+transition-delay: 0.2s;
 }
 
 .slide-in {
-  transition-delay: 0.4s;
+transition-delay: 0.4s;
 }
 
 // JavaScript to trigger animations
 const scrollElements = document.querySelectorAll('.scroll-element');
 
 const elementInView = (el, percentageScroll = 100) => {
-  const elementTop = el.getBoundingClientRect().top;
-  return (
-    elementTop <= 
-    ((window.innerHeight || document.documentElement.clientHeight) * (percentageScroll/100))
-  );
+const elementTop = el.getBoundingClientRect().top;
+return (
+elementTop <= 
+((window.innerHeight || document.documentElement.clientHeight) * (percentageScroll/100))
+);
 };
 
 const displayScrollElement = (element) => {
-  element.classList.add('visible');
+element.classList.add('visible');
 };
 
 const hideScrollElement = (element) => {
-  element.classList.remove('visible');
+element.classList.remove('visible');
 };
 
 const handleScrollAnimation = () => {
-  scrollElements.forEach((el) => {
-    if (elementInView(el, 100)) {
-      displayScrollElement(el);
-    } else {
-      hideScrollElement(el);
-    }
-  })
+scrollElements.forEach((el) => {
+if (elementInView(el, 100)) {
+displayScrollElement(el);
+} else {
+hideScrollElement(el);
+}
+})
 }
 
 window.addEventListener('scroll', () => {
-  handleScrollAnimation();
+handleScrollAnimation();
 });
-    `,
-    resources: [
-      { title: 'Scroll-Triggered Animations with Intersection Observer', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API' },
-      { title: 'AOS Library for Scroll Animations', url: 'https://github.com/michalsnik/aos' },
-    ],
-  },
-                    ],
-                    selectedTrend: null,
-                    cssGenerator: {
-                        bgColor: '#ffffff',
-                        textColor: '#000000',
-                        borderRadius: 10,
-                        padding: 20,
-                    },
-                    aiPrompt: '',
-                    aiResponse: '',
-                    communityProjects: [
-                        {
-                            id: 1,
-                            title: 'Neon Nights',
-                            description: 'A cyberpunk-inspired portfolio website.',
-                            image: 'Screenshot 2024-07-21 162022.png',
-                            author: 'SRIDHAR',
-                            authorAvatar: 'image.png',
-                            link: 'https://sridhar242004.github.io/PORTFOLIO-SRIDHAR-S/index2.html',
-                        },
-                        // Add more community projects here
-                    ],
-                    learningResources: [
-                        {
-                            id: 1,
-                            title: 'Modern CSS Techniques',
-                            description: 'Learn the latest CSS features and techniques.',
-                            icon: 'fas fa-code',
-                            link: 'https://example.com/modern-css-course',
-                        },
-                        // Add more learning resources here
-                    ],
-                    showSubmitProjectModal: false,
-                    newProject: {
-                        title: '',
-                        description: '',
-                        link: '',
-                        image: null,
-                    },
-                    newsletterEmail: '',
-                };
-            },
-            computed: {
-                generatedCSS() {
-                    return {
-                        backgroundColor: this.cssGenerator.bgColor,
-                        color: this.cssGenerator.textColor,
-                        borderRadius: `${this.cssGenerator.borderRadius}px`,
-                        padding: `${this.cssGenerator.padding}px`,
-                    };
-                },
-                generatedCSSCode() {
-                    return `
+`,
+resources: [
+{ title: 'Scroll-Triggered Animations with Intersection Observer', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API' },
+{ title: 'AOS Library for Scroll Animations', url: 'https://github.com/michalsnik/aos' },
+],
+},
+                  ],
+                  selectedTrend: null,
+                  cssGenerator: {
+                      bgColor: '#ffffff',
+                      textColor: '#000000',
+                      borderRadius: 10,
+                      padding: 20,
+                  },
+                  aiPrompt: '',
+                  aiResponse: '',
+                  communityProjects: [
+                      {
+                          id: 1,
+                          title: 'Neon Nights',
+                          description: 'A cyberpunk-inspired portfolio website.',
+                          image: 'Screenshot 2024-07-21 162022.png',
+                          author: 'SRIDHAR',
+                          authorAvatar: 'image.png',
+                          link: 'https://sridhar242004.github.io/PORTFOLIO-SRIDHAR-S/index2.html',
+                      },
+                      // Add more community projects here
+                  ],
+                  learningResources: [
+                      {
+                          id: 1,
+                          title: 'Modern CSS Techniques',
+                          description: 'Learn the latest CSS features and techniques.',
+                          icon: 'fas fa-code',
+                          link: 'https://example.com/modern-css-course',
+                      },
+                      // Add more learning resources here
+                  ],
+                  showSubmitProjectModal: false,
+                  newProject: {
+                      title: '',
+                      description: '',
+                      link: '',
+                      image: null,
+                  },
+                  newsletterEmail: '',
+              };
+          },
+          computed: {
+              
+            generatedCSS() {
+              return {
+                  backgroundColor: this.cssGenerator.bgColor,
+                  color: this.cssGenerator.textColor,
+                  borderRadius: `${this.cssGenerator.borderRadius}px`,
+                  padding: `${this.cssGenerator.padding}px`,
+              };
+          },
+          generatedCSSCode() {
+              return `
 .generated-element {
-    background-color: ${this.cssGenerator.bgColor};
-    color: ${this.cssGenerator.textColor};
-    border-radius: ${this.cssGenerator.borderRadius}px;
-    padding: ${this.cssGenerator.padding}px;
+background-color: ${this.cssGenerator.bgColor};
+color: ${this.cssGenerator.textColor};
+border-radius: ${this.cssGenerator.borderRadius}px;
+padding: ${this.cssGenerator.padding}px;
 }
-                    `.trim();
-                },
-            },
-            mounted() {
-                window.addEventListener('scroll', this.handleScroll);
-            },
-            methods: {
-                handleScroll() {
-                    this.scrolled = window.scrollY > 50;
-                },
-                toggleMobileMenu() {
-                    this.mobileMenuOpen = !this.mobileMenuOpen;
-                },
-                scrollToSection(sectionId) {
-                    const element = document.getElementById(sectionId);
-                    if (element) {
-                        element.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    this.mobileMenuOpen = false;
-                },
-                openTrendDemo(trend) {
-                    this.selectedTrend = trend;
-                },
-                closeTrendDemo() {
-                    this.selectedTrend = null;
-                },
-                copyCode(code) {
-                    navigator.clipboard.writeText(code).then(() => {
-                        alert('Code copied to clipboard!');
-                    });
-                },
-                copyCSS() {
-                    navigator.clipboard.writeText(this.generatedCSSCode).then(() => {
-                        alert('CSS copied to clipboard!');
-                    });
-                },
-                generateAIResponse() {
-                    // Simulated AI response - replace with actual API call in a real application
-                    const responses = [
-                        "Consider using a monochromatic color scheme to create a sleek and modern look.",
-                        "Experiment with asymmetrical layouts to add visual interest to your design.",
-                        "Incorporate micro-interactions to enhance user engagement and provide feedback.",
-                        "Try using variable fonts to create dynamic and responsive typography.",
-                        "Implement a dark mode option to improve accessibility and user preference.",
-                    ];
-                    this.aiResponse = responses[Math.floor(Math.random() * responses.length)];
-                },
-                openSubmitProjectModal() {
-                    this.showSubmitProjectModal = true;
-                },
-                closeSubmitProjectModal() {
-                    this.showSubmitProjectModal = false;
-                    this.newProject = {
-                        title: '',
-                        description: '',
-                        link: '',
-                        image: null,
-                    };
-                },
-                handleImageUpload(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        this.newProject.image = URL.createObjectURL(file);
-                    }
-                },
-                submitProject() {
-                    // In a real application, you would send this data to your backend
-                    console.log('Submitting project:', this.newProject);
-                    
-                    // Add the new project to the communityProjects array
-                    this.communityProjects.unshift({
-                        id: this.communityProjects.length + 1,
-                        title: this.newProject.title,
-                        description: this.newProject.description,
-                        image: this.newProject.image,
-                        author: 'Anonymous', // Replace with actual user data in a real app
-                        authorAvatar: 'https://example.com/default-avatar.jpg',
-                        link: this.newProject.link,
-                    });
+              `.trim();
+          },
+      },
+      mounted() {
+          window.addEventListener('scroll', this.handleScroll);
+      },
+      methods: {
+          handleScroll() {
+              this.scrolled = window.scrollY > 50;
+          },
+          toggleMobileMenu() {
+              this.mobileMenuOpen = !this.mobileMenuOpen;
+          },
+          scrollToSection(sectionId) {
+              const element = document.getElementById(sectionId);
+              if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+              }
+              this.mobileMenuOpen = false;
+          },
+          openTrendDemo(trend) {
+              this.selectedTrend = trend;
+          },
+          closeTrendDemo() {
+              this.selectedTrend = null;
+          },
+          copyCode(code) {
+              navigator.clipboard.writeText(code).then(() => {
+                  alert('Code copied to clipboard!');
+              });
+          },
+          copyCSS() {
+              navigator.clipboard.writeText(this.generatedCSSCode).then(() => {
+                  alert('CSS copied to clipboard!');
+              });
+          },
+          generateAIResponse() {
+              // Simulated AI response - replace with actual API call in a real application
+              const responses = [
+                  "Consider using a monochromatic color scheme to create a sleek and modern look.",
+                  "Experiment with asymmetrical layouts to add visual interest to your design.",
+                  "Incorporate micro-interactions to enhance user engagement and provide feedback.",
+                  "Try using variable fonts to create dynamic and responsive typography.",
+                  "Implement a dark mode option to improve accessibility and user preference.",
+              ];
+              this.aiResponse = responses[Math.floor(Math.random() * responses.length)];
+          },
+          openSubmitProjectModal() {
+              this.showSubmitProjectModal = true;
+          },
+          closeSubmitProjectModal() {
+              this.showSubmitProjectModal = false;
+              this.newProject = {
+                  title: '',
+                  description: '',
+                  link: '',
+                  image: null,
+              };
+          },
+          handleImageUpload(event) {
+              const file = event.target.files[0];
+              if (file) {
+                  this.newProject.image = URL.createObjectURL(file);
+              }
+          },
+          submitProject() {
+              // In a real application, you would send this data to your backend
+              console.log('Submitting project:', this.newProject);
+              
+              // Add the new project to the communityProjects array
+              this.communityProjects.unshift({
+                  id: this.communityProjects.length + 1,
+                  title: this.newProject.title,
+                  description: this.newProject.description,
+                  image: this.newProject.image,
+                  author: 'Anonymous', // Replace with actual user data in a real app
+                  authorAvatar: 'https://example.com/default-avatar.jpg',
+                  link: this.newProject.link,
+              });
 
-                    // Close the modal and reset the form
-                    this.closeSubmitProjectModal();
-                    alert('Project submitted successfully!');
-                },
-                subscribeNewsletter() {
-                    // In a real application, you would send this data to your backend
-                    console.log('Subscribing email:', this.newsletterEmail);
-                    alert('Thank you for subscribing to our newsletter!');
-                    this.newsletterEmail = '';
-                },
-                downloadCode(trend) {
-                    const element = document.createElement('a');
-                    const file = new Blob([trend.codeSnippet], {type: 'text/plain'});
-                    element.href = URL.createObjectURL(file);
-                    element.download = `${trend.title.toLowerCase().replace(/\s+/g, '-')}-code.txt`;
-                    document.body.appendChild(element);
-                    element.click();
-                    document.body.removeChild(element);
-                },
-            },
-        });
+              // Close the modal and reset the form
+              this.closeSubmitProjectModal();
+              alert('Project submitted successfully!');
+          },
+          subscribeNewsletter() {
+              // In a real application, you would send this data to your backend
+              console.log('Subscribing email:', this.newsletterEmail);
+              alert('Thank you for subscribing to our newsletter!');
+              this.newsletterEmail = '';
+          },
+          downloadCode(trend) {
+              const element = document.createElement('a');
+              const file = new Blob([trend.codeSnippet], {type: 'text/plain'});
+              element.href = URL.createObjectURL(file);
+              element.download = `${trend.title.toLowerCase().replace(/\s+/g, '-')}-code.txt`;
+              document.body.appendChild(element);
+              element.click();
+              document.body.removeChild(element);
+          },
+      },
+  });
 
-        app.mount('#app');
-    </script>
+  app.mount('#app');
+</script>
 </body>
 </html>

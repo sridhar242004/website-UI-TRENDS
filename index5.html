@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoWeb Revolution Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Roboto+Mono:wght@400;700&display=swap');
+
+        .neo-brutalist-box {
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            transition: all 0.3s ease;
+        }
+
+        .neo-brutalist-box:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0 #000;
+        }
+
+        .neo-brutalist-button {
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            transition: all 0.3s ease;
+        }
+
+        .neo-brutalist-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+        }
+
+        .glitch {
+            position: relative;
+            font-family: 'Bungee Shade', cursive;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+            animation: glitch-anim2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(123px, 9999px, 42px, 0); }
+            20% { clip: rect(76px, 9999px, 14px, 0); }
+            40% { clip: rect(134px, 9999px, 96px, 0); }
+            60% { clip: rect(45px, 9999px, 150px, 0); }
+            80% { clip: rect(112px, 9999px, 18px, 0); }
+            100% { clip: rect(31px, 9999px, 83px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(93px, 9999px, 132px, 0); }
+            20% { clip: rect(25px, 9999px, 64px, 0); }
+            40% { clip: rect(117px, 9999px, 8px, 0); }
+            60% { clip: rect(52px, 9999px, 139px, 0); }
+            80% { clip: rect(81px, 9999px, 27px, 0); }
+            100% { clip: rect(6px, 9999px, 98px, 0); }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(270deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background-size: 800% 800%;
+            animation: gradient 10s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .color-shift {
+            transition: background-color 0.5s ease;
+        }
+
+        .color-shift:hover {
+            background-color: #feca57;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-['Roboto_Mono',_monospace] bg-gray-100">
+    <div id="app" v-cloak>
+        <!-- Navigation -->
+        <nav class="fixed top-0 left-0 w-full bg-yellow-400 z-50 shadow-md transition-transform duration-300" :class="{ '-translate-y-full': scrolled }">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <a href="#" class="text-3xl font-bold neo-brutalist-box bg-white px-4 py-2">NWRE</a>
+                <div class="hidden md:flex space-x-6">
+                    <a v-for="item in menuItems" :key="item.id" :href="'#' + item.id" @click="scrollToSection(item.id)" class="text-xl hover:underline">{{ item.name }}</a>
+                </div>
+                <button @click="toggleMobileMenu" class="md:hidden neo-brutalist-button bg-white px-4 py-2">Menu</button>
+            </div>
+            <div v-if="mobileMenuOpen" class="md:hidden bg-yellow-400 p-4">
+                <a v-for="item in menuItems" :key="item.id" :href="'#' + item.id" @click="scrollToSection(item.id)" class="block text-xl py-2">{{ item.name }}</a>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="home" class="section min-h-screen flex items-center justify-center animated-gradient py-20 pt-32">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-6xl md:text-8xl font-bold mb-8 text-white glitch" data-text="NeoWeb Revolution">NeoWeb Revolution</h1>
+                <p class="text-2xl mb-12 text-white">Explore cutting-edge trends, interact with live examples, and elevate your projects with our innovative tools and community-driven insights.</p>
+                <a href="#trends" class="inline-block bg-black text-white text-2xl px-8 py-4 neo-brutalist-button hover:bg-white hover:text-black transition-colors duration-300">Explore Trends</a>
+            </div>
+        </section>
+
+        <!-- Trends Section -->
+        <section id="trends" class="section py-20 bg-cyan-400">
+            <div class="container mx-auto px-4">
+                <h2 class="text-5xl font-bold mb-12 text-center">Latest Web Design Trends</h2>
+                <div class="bento-grid">
+                    <div v-for="trend in trends" :key="trend.id" class="neo-brutalist-box p-6 bg-white color-shift">
+                        <h3 class="text-2xl font-bold mb-4">{{ trend.title }}</h3>
+                        <p class="mb-4">{{ trend.description }}</p>
+                        <button @click="openTrendModal(trend)" class="neo-brutalist-button bg-black text-white px-4 py-2 hover:bg-white hover:text-black transition-colors duration-300">View Demo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Playground -->
+        <section id="playground" class="section py-20 bg-orange-500">
+            <div class="container mx-auto px-4">
+                <h2 class="text-5xl font-bold mb-12 text-center">Interactive Playground</h2>
+                <div class="neo-brutalist-box p-8 bg-white">
+                    <h3 class="text-3xl font-bold mb-6">Advanced CSS Generator</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Background Color</label>
+                                <input v-model="cssProps.backgroundColor" type="color" class="w-full">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Text Color</label>
+                                <input v-model="cssProps.color" type="color" class="w-full">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Border Radius</label>
+                                <input v-model="cssProps.borderRadius" type="range" min="0" max="50" class="w-full">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Padding</label>
+                                <input v-model="cssProps.padding" type="range" min="0" max="50" class="w-full">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Font Size</label>
+                                <input v-model="cssProps.fontSize" type="range" min="12" max="72" class="w-full">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block mb-2">Box Shadow</label>
+                                <input v-model="cssProps.boxShadow" type="range" min="0" max="20" class="w-full">
+                            </div>
+                        </div>
+                        <div>
+                            <div id="preview" class="border-4 border-black p-4 h-40 flex items-center justify-center text-2xl mb-4" :style="generatedCSS">
+                                Preview Text
+                            </div>
+                            <h4 class="text-2xl font-bold mb-4">Generated CSS</h4>
+                            <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto">{{ generatedCSSCode }}</pre>
+                            <button @click="copyCSSCode" class="neo-brutalist-button bg-black text-white px-4 py-2 mt-4 hover:bg-white hover:text-black transition-colors duration-300">Copy CSS</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Showcase -->
+        <section id="community" class="section py-20 bg-purple-500">
+            <div class="container mx-auto px-4">
+                <h2 class="text-5xl font-bold mb-12 text-center">Community Showcase</h2>
+                <div class="bento-grid">
+                    <div v-for="project in communityProjects" :key="project.id" class="neo-brutalist-box p-6 bg-white">
+                        <h3 class="text-2xl font-bold mb-2">{{ project.title }}</h3>
+                        <p class="mb-4">{{ project.description }}</p>
+                        <div class="flex items-center mb-4">
+                            <img :src="project.authorAvatar" alt="Author" class="w-10 h-10 rounded-full mr-2">
+                            <span>{{ project.author }}</span>
+                        </div>
+                        <a :href="project.link" target="_blank" class="neo-brutalist-button bg-black text-white px-4 py-2 inline-block hover:bg-white hover:text-black transition-colors duration-300">View Project</a>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <button @click="openSubmitProjectModal" class="neo-brutalist-button bg-white text-black px-8 py-4 text-xl hover:bg-black hover:text-white transition-colors duration-300">Submit Your Project</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-yellow-400 py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">NeoWeb Revolution Explorer</h3>
+                        <p>Empowering designers and developers to create cutting-edge web experiences.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                        <ul>
+                            <li v-for="item in menuItems" :key="item.id">
+                                <a :href="'#' + item.id" @click="scrollToSection(item.id)" class="hover:underline">{{ item.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Connect</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-2xl hover:text-white">📘</a>
+                            <a href="#" class="text-2xl hover:text-white">🐦</a>
+                            <a href="#" class="text-2xl hover:text-white">📸</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Newsletter</h4>
+                        <form @submit.prevent="subscribeNewsletter" class="flex">
+                            <input type="email" v-model="newsletterEmail" placeholder="Your email" class="flex-grow px-4 py-2 neo-brutalist-box">
+                            <button type="submit" class="neo-brutalist-button bg-black text-white px-4 py-2 ml-2 hover:bg-white hover:text-black transition-colors duration-300">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="border-t border-black mt-8 pt-8 text-center">
+                    <p>© 2024 NeoWeb Revolution Explorer. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Trend Modal -->
+        <div v-if="selectedTrend" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 max-w-2xl w-full neo-brutalist-box overflow-y-auto max-h-screen scrollbar-hide">
+                <h2 class="text-3xl font-bold mb-4">{{ selectedTrend.title }}</h2>
+                <p class="mb-6">{{ selectedTrend.description }}</p>
+                <div v-html="selectedTrend.liveDemo" class="mb-6"></div>
+                <h3 class="text-2xl font-bold mb-4">Code Snippet</h3>
+                <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto mb-6">{{ selectedTrend.codeSnippet }}</pre>
+                <button @click="copyTrendCode" class="neo-brutalist-button bg-black text-white px-4 py-2 mr-4 hover:bg-white hover:text-black transition-colors duration-300">Copy Code</button>
+                <button @click="closeTrendModal" class="neo-brutalist-button bg-white text-black px-4 py-2 hover:bg-black hover:text-white transition-colors duration-300">Close</button>
+            </div>
+        </div>
+
+        <!-- Submit Project Modal -->
+        <div v-if="showSubmitProjectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-8 max-w-lg w-full neo-brutalist-box">
+                <h2 class="text-3xl font-bold mb-4">Submit Your Project</h2>
+                <form @submit.prevent="submitProject">
+                    <div class="mb-4">
+                        <label class="block mb-2">Project Title</label>
+                        <input v-model="newProject.title" type="text" class="w-full px-4 py-2 neo-brutalist-box" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block mb-2">Project Description</label>
+                        <textarea v-model="newProject.description" class="w-full px-4 py-2 neo-brutalist-box" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block mb-2">Project Link</label>
+                        <input v-model="newProject.link" type="url" class="w-full px-4 py-2 neo-brutalist-box" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block mb-2">Your Name</label>
+                        <input v-model="newProject.author" type="text" class="w-full px-4 py-2 neo-brutalist-box" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block mb-2">Your Avatar URL</label>
+                        <input v-model="newProject.authorAvatar" type="url" class="w-full px-4 py-2 neo-brutalist-box" required>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="submit" class="neo-brutalist-button bg-black text-white px-4 py-2 mr-4 hover:bg-white hover:text-black transition-colors duration-300">Submit</button>
+                        <button @click="closeSubmitProjectModal" type="button" class="neo-brutalist-button bg-white text-black px-4 py-2 hover:bg-black hover:text-white transition-colors duration-300">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    scrolled: false,
+                    mobileMenuOpen: false,
+                    menuItems: [
+                        { id: 'home', name: 'Home' },
+                        { id: 'trends', name: 'Trends' },
+                        { id: 'playground', name: 'Playground' },
+                        { id: 'community', name: 'Community' },
+                    ],
+                    trends: [
+                    {
+                      id: 1,
+                      title: 'Glassmorphism',
+                      description: 'Create stunning frosted glass effects in your UI.',
+                      image: 'glassmorphism.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                          <div class="bg-gradient-to-r from-purple-400 to-pink-500 p-8 rounded-lg">
+                              <div class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg">
+                                  <h3 class="text-white text-2xl font-bold mb-4">Glassmorphism Effect</h3>
+                                  <p class="text-white text-opacity-80">This is an example of the glassmorphism trend in action.</p>
+                              </div>
+                          </div>
+                      `,
+                      codeSnippet: `
+                  .glassmorphism {
+                  background: rgba(255, 255, 255, 0.2);
+                  backdrop-filter: blur(10px);
+                  border-radius: 10px;
+                  padding: 20px;
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                  }
+                      `,
+                      resources: [
+                          { title: 'Glassmorphism Generator', url: 'https://hype4.academy/tools/glassmorphism-generator' },
+                          { title: 'CSS-Tricks: Glassmorphism', url: 'https://css-tricks.com/glassmorphism-create-a-glass-effect-with-html-and-css/' },
+                      ],
+                  },
+                  {
+                      id: 2,
+                      title: 'Neumorphism',
+                      description: 'Soft UI design with subtle shadows for a modern look.',
+                      image: 'neumorphism.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                        <div class="bg-gray-200 p-8 rounded-lg">
+                          <div class="neumorphism-box">
+                            <h3 class="text-gray-800 text-2xl font-bold mb-4">Neumorphism Design</h3>
+                            <p class="text-gray-600">Soft and elegant user interface elements.</p>
+                          </div>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .neumorphism-box {
+                    background: #e0e0e0;
+                    border-radius: 50px;
+                    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+                    padding: 20px;
+                  }
+                      `,
+                      resources: [
+                        { title: 'Neumorphism.io', url: 'https://neumorphism.io/' },
+                        { title: 'CSS-Tricks: Neumorphism', url: 'https://css-tricks.com/neumorphism-and-css/' },
+                      ],
+                    },
+                    {
+                      id: 3,
+                      title: 'Micro-interactions',
+                      description: 'Small, engaging animations that enhance user experience.',
+                      image: 'micro-interactions.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                        <div class="bg-white p-8 rounded-lg">
+                          <button class="micro-interaction-btn">
+                            <span>Hover me</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                          </button>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .micro-interaction-btn {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 10px 20px;
+                    background-color: #3498db;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                  }
+                  
+                  .micro-interaction-btn:hover {
+                    background-color: #2980b9;
+                    transform: translateX(5px);
+                  }
+                  
+                  .micro-interaction-btn svg {
+                    transition: transform 0.3s ease;
+                  }
+                  
+                  .micro-interaction-btn:hover svg {
+                    transform: translateX(5px);
+                  }
+                      `,
+                      resources: [
+                        { title: 'Microinteractions: Design with Details', url: 'https://www.nngroup.com/articles/microinteractions/' },
+                        { title: 'The Importance of Micro-Interactions', url: 'https://uxdesign.cc/micro-interactions-why-when-and-how-to-use-them-to-boost-the-ux-17094b3baaa0' },
+                      ],
+                    },
+                    {
+                      id: 4,
+                      title: 'Dark Mode Toggle',
+                      description: 'Implement a smooth dark mode transition for better user experience.',
+                      image: 'dark-mode-toggle.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                        <div class="dark-mode-demo">
+                          <div class="content">
+                            <h3>Dark Mode Toggle</h3>
+                            <p>Click the switch to toggle dark mode.</p>
+                          </div>
+                          <label class="switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .dark-mode-demo {
+                    padding: 20px;
+                    transition: background-color 0.3s, color 0.3s;
+                  }
+                  
+                  .dark-mode-demo.dark {
+                    background-color: #333;
+                    color: #fff;
+                  }
+                  
+                  .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 60px;
+                    height: 34px;
+                  }
+                  
+                  .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                  }
+                  
+                  .slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ccc;
+                    transition: .4s;
+                  }
+                  
+                  .slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 26px;
+                    width: 26px;
+                    left: 4px;
+                    bottom: 4px;
+                    background-color: white;
+                    transition: .4s;
+                  }
+                  
+                  input:checked + .slider {
+                    background-color: #2196F3;
+                  }
+                  
+                  input:checked + .slider:before {
+                    transform: translateX(26px);
+                  }
+                  
+                  .slider.round {
+                    border-radius: 34px;
+                  }
+                  
+                  .slider.round:before {
+                    border-radius: 50%;
+                  }
+                      `,
+                      resources: [
+                        { title: 'Implementing Dark Mode', url: 'https://css-tricks.com/a-complete-guide-to-dark-mode-on-the-web/' },
+                        { title: 'Dark Mode UI Design', url: 'https://uxplanet.org/8-tips-for-dark-theme-design-8dfc2f8f7ab6' },
+                      ],
+                    },
+                    {
+                      id: 5,
+                      title: 'Animated Gradients',
+                      description: 'Create eye-catching animated gradient backgrounds.',
+                      image: 'animated-gradients.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                        <div class="animated-gradient">
+                          <h3>Animated Gradient Background</h3>
+                          <p>Watch the colors shift and change.</p>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .animated-gradient {
+                    width: 100%;
+                    height: 300px;
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+                    background-size: 400% 400%;
+                    animation: gradient 15s ease infinite;
+                  }
+                  
+                  @keyframes gradient {
+                    0% {
+                      background-position: 0% 50%;
+                    }
+                    50% {
+                      background-position: 100% 50%;
+                    }
+                    100% {
+                      background-position: 0% 50%;
+                    }
+                  }
+                      `,
+                      resources: [
+                        { title: 'CSS Gradient Animator', url: 'https://www.gradient-animator.com/' },
+                        { title: 'Animated Gradients in CSS', url: 'https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759' },
+                      ],
+                    },
+                    {
+                      id: 6,
+                      title: 'Parallax Scrolling',
+                      description: 'Create depth and immersion with parallax scrolling effects.',
+                      image: 'parallax-scrolling.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                        <div class="parallax-container">
+                          <div class="parallax-layer back">
+                            <h2>Background Layer</h2>
+                          </div>
+                          <div class="parallax-layer middle">
+                            <h2>Middle Layer</h2>
+                          </div>
+                          <div class="parallax-layer front">
+                            <h2>Foreground Layer</h2>
+                          </div>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .parallax-container {
+                    height: 100vh;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    perspective: 1px;
+                  }
+                  
+                  .parallax-layer {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  
+                  .back {
+                    transform: translateZ(-2px) scale(3);
+                  }
+                  
+                  .middle {
+                    transform: translateZ(-1px) scale(2);
+                  }
+                  
+                  .front {
+                    transform: translateZ(0);
+                  }
+                      `,
+                      resources: [
+                        { title: 'Simple Parallax Scrolling Tutorial', url: 'https://medium.com/@dailyfire/pure-css-parallax-simple-tricks-da102d0ffdb9' },
+                        { title: 'Parallax Scrolling Examples', url: 'https://bashooka.com/coding/parallax-scrolling-websites/' },
+                      ],
+                    },
+                    {
+                      id: 7,
+                      title: 'Glassmorphism Cards',
+                      description: 'Create stunning card designs with a glassmorphism effect.',
+                      image: 'glassmorphism-cards.jpg',
+                      category: 'UI Design',
+                      liveDemo: `
+                        <div class="glassmorphism-bg">
+                          <div class="glassmorphism-card">
+                            <h3>Glassmorphism Card</h3>
+                            <p>A modern and elegant card design.</p>
+                          </div>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .glassmorphism-bg {
+                    background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+                    min-height: 100vh;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  
+                  .glassmorphism-card {
+                    background: rgba(255, 255, 255, 0.2);
+                    backdrop-filter: blur(10px);
+                    border-radius: 10px;
+                    padding: 20px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    color: white;
+                    max-width: 300px;
+                  }
+                      `,
+                      resources: [
+                        { title: 'Glassmorphism in User Interfaces', url: 'https://uxdesign.cc/glassmorphism-in-user-interfaces-1f39bb1308c9' },
+                        { title: 'CSS Glassmorphism Generator', url: 'https://ui.glass/generator/' },
+                      ],
+                    },
+                    {
+                      id: 8,
+                      title: 'Gradient Text',
+                      description: 'Apply eye-catching gradients to text elements.',
+                      image: 'gradient-text.jpg',
+                      category: 'Typography',
+                      liveDemo: `
+                        <div class="gradient-text-container">
+                          <h1 class="gradient-text">Gradient Text</h1>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .gradient-text-container {
+                    background-color: #1a1a1a;
+                    padding: 40px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                  
+                  .gradient-text {
+                    font-size: 4rem;
+                    font-weight: bold;
+                    background: linear-gradient(45deg, #ff00ff, #00ffff);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                    text-fill-color: transparent;
+                  }
+                      `,
+                      resources: [
+                        { title: 'CSS Gradient Text Tutorial', url: 'https://css-tricks.com/snippets/css/gradient-text/' },
+                        { title: 'Colorful Typography in Web Design', url: 'https://www.smashingmagazine.com/2021/03/css-generators/' },
+                      ],
+                    },
+                    {
+                      id: 9,
+                      title: 'Morphing SVG',
+                      description: 'Create smooth transitions between SVG shapes.',
+                      image: 'morphing-svg.jpg',
+                      category: 'Animation',
+                      liveDemo: `
+                        <div class="morphing-svg-container">
+                          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#ff5252" d="M0,50 a1,1 0 0,0 100,0">
+                              <animate
+                                attributeName="d"
+                                dur="5s"
+                                repeatCount="indefinite"
+                                values="M0,50 a1,1 0 0,0 100,0;
+                                        M50,0 a1,1 0 0,0 0,100;
+                                        M100,50 a1,1 0 0,0 -100,0;
+                                        M50,100 a1,1 0 0,0 0,-100;
+                                        M0,50 a1,1 0 0,0 100,0"
+                              />
+                            </path>
+                          </svg>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .morphing-svg-container {
+                    width: 200px;
+                    height: 200px;
+                    background-color: #f0f0f0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  }
+                  
+                  .morphing-svg-container svg {
+                    width: 100px;
+                    height: 100px;
+                  }
+                      `,
+                      resources: [
+                        { title: 'SVG Morphing with JavaScript', url: 'https://css-tricks.com/svg-shape-morphing-works/' },
+                        { title: 'GSAP MorphSVG Plugin', url: 'https://greensock.com/docs/v3/Plugins/MorphSVGPlugin' },
+                      ],
+                    },
+                    {
+                      id: 10,
+                      title: 'Animated Checkboxes',
+                      description: 'Enhance user interaction with animated checkbox designs.',
+                      image: 'animated-checkboxes.jpg',
+                      category: 'Form Design',
+                      liveDemo: `
+                        <div class="animated-checkbox-container">
+                          <label class="animated-checkbox">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            Animated Checkbox
+                          </label>
+                        </div>
+                      `,
+                      codeSnippet: `
+                  .animated-checkbox {
+                    display: block;
+                    position: relative;
+                    padding-left: 35px;
+                    margin-bottom: 12px;
+                    cursor: pointer;
+                    font-size: 18px;
+                    user-select: none;
+                  }
+                  
+                  .animated-checkbox input {
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                    height: 0;
+                    width: 0;
+                  }
+                  
+                  .checkmark {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 25px;
+                    width: 25px;
+                    background-color: #eee;
+                    border-radius: 4px;
+                    transition: all 0.3s ease;
+                  }
+                  
+                  .animated-checkbox:hover input ~ .checkmark {
+                    background-color: #ccc;
+                  }
+                    .animated-checkbox input:checked ~ .checkmark {
+                  background-color: #2196F3;
+                  }
+                  
+                  .checkmark:after {
+                  content: "";
+                  position: absolute;
+                  display: none;
+                  }
+                  
+                  .animated-checkbox input:checked ~ .checkmark:after {
+                  display: block;
+                  }
+                  
+                  .animated-checkbox .checkmark:after {
+                  left: 9px;
+                  top: 5px;
+                  width: 5px;
+                  height: 10px;
+                  border: solid white;
+                  border-width: 0 3px 3px 0;
+                  transform: rotate(45deg);
+                  animation: checkmark-appear 0.4s ease;
+                  }
+                  
+                  @keyframes checkmark-appear {
+                  0% {
+                  opacity: 0;
+                  transform: rotate(45deg) scale(0);
+                  }
+                  100% {
+                  opacity: 1;
+                  transform: rotate(45deg) scale(1);
+                  }
+                  }
+                  `,
+                  resources: [
+                  { title: 'CSS Animated Checkboxes', url: 'https://freefrontend.com/css-checkboxes/' },
+                  { title: 'Accessible Custom Checkboxes', url: 'https://css-tricks.com/custom-styling-form-inputs-with-modern-css-features/' },
+                  ],
+                  },
+                  {
+                  id: 11,
+                  title: 'Animated Hamburger Menu',
+                  description: 'Create an engaging animated hamburger menu icon.',
+                  image: 'animated-hamburger.jpg',
+                  category: 'Navigation',
+                  liveDemo: `
+                  <div class="hamburger-container">
+                  <button class="hamburger" id="hamburger-toggle">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  </button>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .hamburger {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-around;
+                  width: 2rem;
+                  height: 2rem;
+                  background: transparent;
+                  border: none;
+                  cursor: pointer;
+                  padding: 0;
+                  }
+                  
+                  .hamburger span {
+                  width: 2rem;
+                  height: 0.25rem;
+                  background: #333;
+                  border-radius: 10px;
+                  transition: all 0.3s linear;
+                  position: relative;
+                  transform-origin: 1px;
+                  }
+                  
+                  .hamburger.open span:first-child {
+                  transform: rotate(45deg);
+                  }
+                  
+                  .hamburger.open span:nth-child(2) {
+                  opacity: 0;
+                  }
+                  
+                  .hamburger.open span:nth-child(3) {
+                  transform: rotate(-45deg);
+                  }
+                  `,
+                  resources: [
+                  { title: 'Animated Hamburger Menu Icons', url: 'https://github.com/jonsuh/hamburgers' },
+                  { title: 'CSS Hamburger Menu Tutorial', url: 'https://css-tricks.com/hamburger-menu-with-a-side-of-react-hooks-and-styled-components/' },
+                  ],
+                  },
+                  {
+                  id: 12,
+                  title: 'Floating Labels',
+                  description: 'Implement elegant floating labels for form inputs.',
+                  image: 'floating-labels.jpg',
+                  category: 'Form Design',
+                  liveDemo: `
+                  <div class="floating-label-container">
+                  <div class="floating-label">
+                  <input type="text" id="name" placeholder=" " required>
+                  <label for="name">Name</label>
+                  </div>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .floating-label {
+                  position: relative;
+                  margin-bottom: 20px;
+                  }
+                  
+                  .floating-label input {
+                  width: 100%;
+                  padding: 10px;
+                  border: 1px solid #ccc;
+                  border-radius: 4px;
+                  font-size: 16px;
+                  transition: all 0.3s ease;
+                  }
+                  
+                  .floating-label label {
+                  position: absolute;
+                  top: 50%;
+                  left: 10px;
+                  transform: translateY(-50%);
+                  font-size: 16px;
+                  color: #999;
+                  pointer-events: none;
+                  transition: all 0.3s ease;
+                  }
+                  
+                  .floating-label input:focus + label,
+                  .floating-label input:not(:placeholder-shown) + label {
+                  top: 0;
+                  font-size: 12px;
+                  color: #333;
+                  background-color: white;
+                  padding: 0 5px;
+                  }
+                  
+                  .floating-label input:focus {
+                  border-color: #007bff;
+                  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+                  }
+                  `,
+                  resources: [
+                  { title: 'CSS-only Floating Labels', url: 'https://css-tricks.com/float-labels-css/' },
+                  { title: 'Accessible Floating Labels', url: 'https://medium.com/@eugenioluminari/accessible-floating-labels-55917786c3f1' },
+                  ],
+                  },
+                  {
+                  id: 13,
+                  title: 'Skeleton Loading',
+                  description: 'Implement skeleton screens for better perceived performance.',
+                  image: 'skeleton-loading.jpg',
+                  category: 'UX Design',
+                  liveDemo: `
+                  <div class="skeleton-container">
+                  <div class="skeleton-card">
+                  <div class="skeleton-image"></div>
+                  <div class="skeleton-text"></div>
+                  <div class="skeleton-text"></div>
+                  </div>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .skeleton-card {
+                  width: 300px;
+                  padding: 20px;
+                  background-color: #f0f0f0;
+                  border-radius: 8px;
+                  }
+                  
+                  .skeleton-image {
+                  width: 100%;
+                  height: 200px;
+                  background-color: #e0e0e0;
+                  margin-bottom: 15px;
+                  border-radius: 4px;
+                  }
+                  
+                  .skeleton-text {
+                  height: 20px;
+                  background-color: #e0e0e0;
+                  margin-bottom: 10px;
+                  border-radius: 4px;
+                  }
+                  
+                  .skeleton-text:last-child {
+                  width: 80%;
+                  }
+                  
+                  @keyframes skeleton-loading {
+                  0% {
+                  background-position: 100% 50%;
+                  }
+                  100% {
+                  background-position: 0 50%;
+                  }
+                  }
+                  
+                  .skeleton-card * {
+                  background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                  background-size: 200% 100%;
+                  animation: skeleton-loading 1.5s infinite;
+                  }
+                  `,
+                  resources: [
+                  { title: 'Skeleton Screen Patterns', url: 'https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a' },
+                  { title: 'Creating Skeleton Screens with CSS', url: 'https://css-tricks.com/building-skeleton-screens-css-custom-properties/' },
+                  ],
+                  },
+                  {
+                  id: 14,
+                  title: '3D Card Flip',
+                  description: 'Create an interactive 3D card flip effect.',
+                  image: '3d-card-flip.jpg',
+                  category: 'Animation',
+                  liveDemo: `
+                  <div class="flip-card-container">
+                  <div class="flip-card">
+                  <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                  <h3>Front Side</h3>
+                  </div>
+                  <div class="flip-card-back">
+                  <h3>Back Side</h3>
+                  </div>
+                  </div>
+                  </div>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .flip-card {
+                  background-color: transparent;
+                  width: 300px;
+                  height: 200px;
+                  perspective: 1000px;
+                  }
+                  
+                  .flip-card-inner {
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  text-align: center;
+                  transition: transform 0.6s;
+                  transform-style: preserve-3d;
+                  }
+                  
+                  .flip-card:hover .flip-card-inner {
+                  transform: rotateY(180deg);
+                  }
+                  
+                  .flip-card-front, .flip-card-back {
+                  position: absolute;
+                  width: 100%;
+                  height: 100%;
+                  backface-visibility: hidden;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  border-radius: 8px;
+                  }
+                  
+                  .flip-card-front {
+                  background-color: #bbb;
+                  color: black;
+                  }
+                  
+                  .flip-card-back {
+                  background-color: #2980b9;
+                  color: white;
+                  transform: rotateY(180deg);
+                  }
+                  `,
+                  resources: [
+                  { title: '3D Card Flip Tutorial', url: 'https://3dtransforms.desandro.com/card-flip' },
+                  { title: 'CSS 3D Transforms', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate3d' },
+                  ],
+                  },
+                  {
+                  id: 15,
+                  title: 'Animated Progress Bar',
+                  description: 'Create visually appealing animated progress bars.',
+                  image: 'animated-progress-bar.jpg',
+                  category: 'UI Design',
+                  liveDemo: `
+                  <div class="progress-container">
+                  <div class="progress-bar">
+                  <div class="progress-fill"></div>
+                  </div>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .progress-container {
+                  width: 300px;
+                  background-color: #f0f0f0;
+                  border-radius: 20px;
+                  padding: 3px;
+                  }
+                  
+                  .progress-bar {
+                  height: 20px;
+                  background-color: #4CAF50;
+                  border-radius: 20px;
+                  width: 0;
+                  transition: width 1s ease-in-out;
+                  }
+                  
+                  .progress-fill {
+                  height: 100%;
+                  background-image: linear-gradient(
+                  45deg,
+                  rgba(255, 255, 255, 0.15) 25%,
+                  transparent 25%,
+                  transparent 50%,
+                  rgba(255, 255, 255, 0.15) 50%,
+                  rgba(255, 255, 255, 0.15) 75%,
+                  transparent 75%,
+                  transparent
+                  );
+                  background-size: 40px 40px;
+                  animation: stripes 1s linear infinite;
+                  }
+                  
+                  @keyframes stripes {
+                  0% {
+                  background-position: 0 0;
+                  }
+                  100% {
+                  background-position: 40px 0;
+                  }
+                  }
+                  `,
+                  resources: [
+                  { title: 'CSS Progress Bars', url: 'https://css-tricks.com/css3-progress-bars/' },
+                  { title: 'Animated Progress Bar Designs', url: 'https://freefrontend.com/css-progress-bars/' },
+                  ],
+                  },
+                  {
+                  id: 16,
+                  title: 'Tooltip Animations',
+                  description: 'Create engaging tooltip animations for better user experience.',
+                  image: 'tooltip-animations.jpg',
+                  category: 'UI Design',
+                  liveDemo: `
+                  <div class="tooltip-container">
+                  <button class="tooltip-trigger">Hover me
+                  <span class="tooltip">I'm an animated tooltip!</span>
+                  </button>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .tooltip-trigger {
+                  position: relative;
+                  display: inline-block;
+                  padding: 10px 20px;
+                  background-color: #007bff;
+                  color: white;
+                  border: none;
+                  border-radius: 4px;
+                  cursor: pointer;
+                  }
+                  
+                  .tooltip {
+                  visibility: hidden;
+                  width: 120px;
+                  background-color: #333;
+                  color: #fff;
+                  text-align: center;
+                  border-radius: 6px;
+                  padding: 5px;
+                  position: absolute;
+                  z-index: 1;
+                  bottom: 125%;
+                  left: 50%;
+                  margin-left: -60px;
+                  opacity: 0;
+                  transition: opacity 0.3s, transform 0.3s;
+                  transform: translateY(10px);
+                  }
+                  
+                  .tooltip-trigger:hover .tooltip {
+                  visibility: visible;
+                  opacity: 1;
+                  transform: translateY(0);
+                  }
+                  
+                  .tooltip::after {
+                  content: "";
+                  position: absolute;
+                  top: 100%;
+                  left: 50%;
+                  margin-left: -5px;
+                  border-width: 5px;
+                  border-style: solid;
+                  border-color: #333 transparent transparent transparent;
+                  }
+                  `,
+                  resources: [
+                  { title: 'CSS Tooltip Tutorial', url: 'https://www.w3schools.com/css/css_tooltip.asp' },
+                  { title: 'Advanced CSS Tooltip Techniques', url: 'https://css-tricks.com/bubble-point-tooltips-with-css3-jquery/' },
+                  ],
+                  },
+                  {
+                  id: 17,
+                  title: 'Scroll-Triggered Animations',
+                  description: 'Create animations that trigger as the user scrolls down the page.',
+                  image: 'scroll-animations.jpg',
+                  category: 'Animation',
+                  liveDemo: `
+                  <div class="scroll-animation-container">
+                  <div class="scroll-element fade-in">I fade in as you scroll</div>
+                  <div class="scroll-element slide-in">I slide in as you scroll</div>
+                  </div>
+                  `,
+                  codeSnippet: `
+                  .scroll-element {
+                  opacity: 0;
+                  transform: translateY(20px);
+                  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+                  }
+                  
+                  .scroll-element.visible {
+                  opacity: 1;
+                  transform: translateY(0);
+                  }
+                  
+                  .fade-in {
+                  transition-delay: 0.2s;
+                  }
+                  
+                  .slide-in {
+                  transition-delay: 0.4s;
+                  }
+                  
+                  // JavaScript to trigger animations
+                  const scrollElements = document.querySelectorAll('.scroll-element');
+                  
+                  const elementInView = (el, percentageScroll = 100) => {
+                  const elementTop = el.getBoundingClientRect().top;
+                  return (
+                  elementTop <= 
+                  ((window.innerHeight || document.documentElement.clientHeight) * (percentageScroll/100))
+                  );
+                  };
+                  
+                  const displayScrollElement = (element) => {
+                  element.classList.add('visible');
+                  };
+                  
+                  const hideScrollElement = (element) => {
+                  element.classList.remove('visible');
+                  };
+                  
+                  const handleScrollAnimation = () => {
+                  scrollElements.forEach((el) => {
+                  if (elementInView(el, 100)) {
+                  displayScrollElement(el);
+                  } else {
+                  hideScrollElement(el);
+                  }
+                  })
+                  }
+                  
+                  window.addEventListener('scroll', () => {
+                  handleScrollAnimation();
+                  });
+                  `,
+                  resources: [
+                  { title: 'Scroll-Triggered Animations with Intersection Observer', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API' },
+                  { title: 'AOS Library for Scroll Animations', url: 'https://github.com/michalsnik/aos' },
+                  ],
+                  },
+                    ],
+                    selectedTrend: null,
+                    cssProps: {
+                        backgroundColor: '#ffffff',
+                        color: '#000000',
+                        borderRadius: 0,
+                        padding: 20,
+                        fontSize: 16,
+                        boxShadow: 0,
+                    },
+                    communityProjects: [
+                        // Your community projects data here
+                    ],
+                    showSubmitProjectModal: false,
+                    newProject: {
+                        title: '',
+                        description: '',
+                        link: '',
+                        author: '',
+                        authorAvatar: '',
+                    },
+                    newsletterEmail: '',
+                };
+            },
+            computed: {
+                generatedCSS() {
+                    return {
+                        backgroundColor: this.cssProps.backgroundColor,
+                        color: this.cssProps.color,
+                        borderRadius: `${this.cssProps.borderRadius}px`,
+                        padding: `${this.cssProps.padding}px`,
+                        fontSize: `${this.cssProps.fontSize}px`,
+                        boxShadow: `${this.cssProps.boxShadow}px ${this.cssProps.boxShadow}px 0 #000`,
+                    };
+                },
+                generatedCSSCode() {
+                    return `
+.generated-element {
+    background-color: ${this.cssProps.backgroundColor};
+    color: ${this.cssProps.color};
+    border-radius: ${this.cssProps.borderRadius}px;
+    padding: ${this.cssProps.padding}px;
+    font-size: ${this.cssProps.fontSize}px;
+    box-shadow: ${this.cssProps.boxShadow}px ${this.cssProps.boxShadow}px 0 #000;
+}`.trim();
+                },
+            },
+            methods: {
+                scrollToSection(id) {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    this.mobileMenuOpen = false;
+                },
+                toggleMobileMenu() {
+                    this.mobileMenuOpen = !this.mobileMenuOpen;
+                },
+                openTrendModal(trend) {
+                    this.selectedTrend = trend;
+                },
+                closeTrendModal() {
+                    this.selectedTrend = null;
+                },
+                copyTrendCode() {
+                    navigator.clipboard.writeText(this.selectedTrend.codeSnippet);
+                    alert('Code copied to clipboard!');
+                },
+                copyCSSCode() {
+                    navigator.clipboard.writeText(this.generatedCSSCode);
+                    alert('CSS code copied to clipboard!');
+                },
+                openSubmitProjectModal() {
+                    this.showSubmitProjectModal = true;
+                },
+                closeSubmitProjectModal() {
+                    this.showSubmitProjectModal = false;
+                    this.newProject = {
+                        title: '',
+                        description: '',
+                        link: '',
+                        author: '',
+                        authorAvatar: '',
+                    };
+                },
+                submitProject() {
+                    // In a real application, you would send this data to a server
+                    this.communityProjects.push({
+                        id: this.communityProjects.length + 1,
+                        ...this.newProject,
+                    });
+                    this.closeSubmitProjectModal();
+                    alert('Project submitted successfully!');
+                },
+                subscribeNewsletter() {
+                    // In a real application, you would send this email to a server
+                    alert(`Subscribed with email: ${this.newsletterEmail}`);
+                    this.newsletterEmail = '';
+                },
+            },
+            mounted() {
+                window.addEventListener('scroll', () => {
+                    this.scrolled = window.scrollY > 50;
+                });
+            },
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+</html>

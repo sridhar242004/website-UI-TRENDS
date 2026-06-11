@@ -1,1482 +1,1338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Trends Explorer</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <style>
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Curated web design trends. Award-winning interface.">
+  <title>UI TRENDS — Index</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+
+  <style>
+    @layer reset, tokens, global, effects, layout, components, utils;
+
+    @layer tokens {
+      :root {
+        --void: #020204;
+        --void-light: #0a0a12;
+        --surface: rgba(255, 255, 255, 0.03);
+        --surface-hover: rgba(255, 255, 255, 0.06);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-border-hover: rgba(255, 255, 255, 0.15);
+        --text: #F0F0F5;
+        --text-dim: #8A8AA3;
+        --text-muted: #4A4A60;
+        --accent: #8B5CF6;
+        --accent-light: #A78BFA;
+        --accent-glow: rgba(139, 92, 246, 0.25);
+        --font-sans: 'Space Grotesk', system-ui, sans-serif;
+        --font-serif: 'Instrument Serif', Georgia, serif;
+        --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        --radius: 24px;
+        --radius-sm: 16px;
+      }
+    }
+
+    @layer reset {
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { 
+        font-family: var(--font-sans); 
+        background: var(--void); 
+        color: var(--text); 
+        line-height: 1.5; 
+        -webkit-font-smoothing: antialiased; 
+        overflow-x: hidden;
+      }
+      html.lenis, html.lenis body { height: auto; }
+      .lenis.lenis-smooth { scroll-behavior: auto !important; }
+      
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; }
+        .preloader, .cursor, .ambient, .grain { display: none !important; }
+      }
+      
+      body { cursor: none; overflow-x: hidden; }
+      @media (pointer: coarse) { body { cursor: auto; } }
+      img { max-width: 100%; height: auto; display: block; }
+      a { color: inherit; text-decoration: none; }
+      button { font-family: inherit; border: none; background: none; color: inherit; cursor: none; }
+      @media (pointer: coarse) { button { cursor: pointer; } }
+      ::selection { background: var(--accent); color: var(--void); }
+    }
+
+    @layer global {
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: var(--void); }
+      ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+      /* Film grain */
+      .grain {
+        position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-repeat: repeat; background-size: 256px;
+      }
+
+      /* Ambient orbs */
+      .ambient {
+        position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+      }
+      .orb {
+        position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4;
+        animation: orbFloat 20s ease-in-out infinite;
+      }
+      .orb-1 {
+        width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+        top: -10%; left: -10%; animation-delay: 0s;
+      }
+      .orb-2 {
+        width: 500px; height: 500px; background: radial-gradient(circle, rgba(99, 102, 241, 0.2), transparent 70%);
+        bottom: -5%; right: -5%; animation-delay: -7s; animation-duration: 25s;
+      }
+      .orb-3 {
+        width: 400px; height: 400px; background: radial-gradient(circle, rgba(167, 139, 250, 0.15), transparent 70%);
+        top: 40%; left: 60%; animation-delay: -14s; animation-duration: 30s;
+      }
+      @keyframes orbFloat {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 30px) scale(0.9); }
+      }
+
+      /* Preloader */
+      .preloader {
+        position: fixed; inset: 0; z-index: 10000; background: var(--void);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 32px;
+        transition: opacity 1.2s var(--ease-expo), visibility 1.2s;
+      }
+      .preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+      .preloader-shuffle {
+        font-family: var(--font-sans); font-size: 0.875rem; font-weight: 400;
+        letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); min-height: 1.5em;
+      }
+      .preloader-counter {
+        font-family: var(--font-serif); font-style: italic; font-size: 8rem; font-weight: 400;
+        line-height: 1; color: var(--text); font-variant-numeric: tabular-nums;
+      }
+      .preloader-track {
+        width: 240px; height: 2px; background: var(--surface); position: relative; overflow: hidden;
+        border-radius: 2px;
+      }
+      .preloader-fill {
+        position: absolute; inset: 0; background: var(--accent);
+        transform-origin: left; transform: scaleX(0); border-radius: 2px;
+      }
+
+      /* Cursor */
+      .cursor {
+        position: fixed; pointer-events: none; z-index: 10001; mix-blend-mode: difference;
+        transition: opacity 0.3s;
+      }
+      .cursor.hidden { opacity: 0; }
+      .cursor-dot {
+        width: 6px; height: 6px; background: var(--text); border-radius: 50%;
+        position: absolute; transform: translate(-50%, -50%);
+        transition: transform 0.15s ease-out;
+      }
+      .cursor-ring {
+        width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%;
+        position: absolute; transform: translate(-50%, -50%);
+        transition: all 0.4s var(--ease-expo);
+      }
+      .cursor.hover .cursor-ring {
+        width: 64px; height: 64px; border-color: var(--accent); background: rgba(139, 92, 246, 0.1);
+      }
+      .cursor.view .cursor-ring {
+        width: 80px; height: 80px; border-color: transparent; background: var(--accent); mix-blend-mode: normal;
+      }
+      .cursor.view .cursor-label {
+        position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-sans); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--void); transform: translate(-50%, -50%);
+      }
+      .cursor.magnetic .cursor-ring {
+        width: 56px; height: 56px; border-color: var(--accent-light);
+      }
+      @media (pointer: coarse) { .cursor { display: none; } }
+
+      /* Glass utility */
+      .glass {
+        background: var(--surface);
+        backdrop-filter: blur(24px) saturate(1.2);
+        -webkit-backdrop-filter: blur(24px) saturate(1.2);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        transition: border-color 0.4s, background 0.4s;
+      }
+      .glass:hover {
+        border-color: var(--glass-border-hover);
+        background: var(--surface-hover);
+      }
+      .glass-strong {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(40px) saturate(1.5);
+        -webkit-backdrop-filter: blur(40px) saturate(1.5);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: var(--radius);
+      }
+
+      /* Nav */
+      .nav {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+        padding: 28px 48px; display: flex; justify-content: space-between; align-items: center;
+      }
+      .nav-logo {
+        font-family: var(--font-sans); font-size: 1rem; font-weight: 600; letter-spacing: -0.02em;
+        position: relative;
+      }
+      .nav-logo::after {
+        content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+        background: var(--accent); transition: width 0.6s var(--ease-expo);
+      }
+      .nav-logo:hover::after { width: 100%; }
+      .nav-links { display: none; gap: 36px; }
+      .nav-links a {
+        font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+        color: var(--text-dim); position: relative; overflow: hidden; display: inline-block;
+        transition: color 0.4s;
+      }
+      .nav-links a:hover { color: var(--text); }
+      .nav-links a span { display: block; transition: transform 0.5s var(--ease-expo); }
+      .nav-links a:hover span { transform: translateY(-100%); }
+      .nav-links a::after {
+        content: attr(data-text); position: absolute; top: 100%; left: 0; color: var(--accent);
+        transition: transform 0.5s var(--ease-expo);
+      }
+      .nav-links a:hover::after { transform: translateY(-100%); }
+      .nav-trigger {
+        width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; transition: background 0.4s;
+      }
+      .nav-trigger:hover { background: var(--surface); }
+      .nav-trigger svg { width: 20px; height: 20px; }
+      @media (min-width: 768px) { .nav-links { display: flex; } .nav-trigger { display: none; } }
+
+      .mobile-overlay {
+        position: fixed; inset: 0; z-index: 99; background: var(--void);
+        display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 24px;
+        clip-path: inset(0 0 100% 0); transition: clip-path 0.8s var(--ease-expo); pointer-events: none;
+      }
+      .mobile-overlay.open { clip-path: inset(0 0 0 0); pointer-events: all; }
+      .mobile-overlay a {
+        font-family: var(--font-serif); font-size: 3.5rem; font-style: italic; font-weight: 400;
+        color: var(--text-muted); transition: color 0.4s, transform 0.4s var(--ease-expo);
+      }
+      .mobile-overlay a:hover { color: var(--text); transform: translateX(20px); }
+      .mobile-close {
+        position: absolute; top: 28px; right: 48px; width: 48px; height: 48px;
+        display: flex; align-items: center; justify-content: center; border-radius: 50%;
+        transition: background 0.4s;
+      }
+      .mobile-close:hover { background: var(--surface); }
+    }
+
+    @layer effects {
+      /* 3D Tilt Card */
+      .tilt-card {
+        transform-style: preserve-3d;
+        transition: transform 0.1s ease-out;
+        will-change: transform;
+      }
+      .tilt-card .tilt-content {
+        transform: translateZ(40px);
+      }
+      .tilt-card .tilt-shine {
+        position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+        background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%, transparent 100%);
+        opacity: 0; transition: opacity 0.4s;
+      }
+      .tilt-card:hover .tilt-shine { opacity: 1; }
+
+      /* Text decode */
+      .decode-text { display: inline-block; }
+
+      /* Magnetic button */
+      .magnetic {
+        display: inline-flex; align-items: center; justify-content: center;
+        position: relative; transition: transform 0.3s var(--ease-expo);
+      }
+
+      /* Image mask reveal */
+      .img-reveal {
+        clip-path: inset(100% 0 0 0);
+        transition: clip-path 1.2s var(--ease-expo);
+      }
+      .img-reveal.visible { clip-path: inset(0 0 0 0); }
+
+      /* Glow button */
+      .btn-glow {
+        position: relative; padding: 16px 32px; border-radius: 100px;
+        font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+        color: var(--text); overflow: hidden; border: 1px solid var(--glass-border);
+        background: var(--surface); backdrop-filter: blur(10px);
+        transition: all 0.4s var(--ease-expo);
+      }
+      .btn-glow::before {
+        content: ''; position: absolute; inset: -2px; border-radius: inherit;
+        background: linear-gradient(135deg, var(--accent), transparent, var(--accent-light));
+        opacity: 0; transition: opacity 0.4s; z-index: -1;
+        filter: blur(8px);
+      }
+      .btn-glow:hover {
+        border-color: var(--accent-light); transform: translateY(-2px);
+        box-shadow: 0 10px 40px var(--accent-glow);
+      }
+      .btn-glow:hover::before { opacity: 0.6; }
+    }
+
+    @layer layout {
+      .section-pad { padding: 160px 48px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+      @media (max-width: 768px) { .section-pad { padding: 100px 24px; } }
+    }
+
+    @layer components {
+      /* HERO */
+      .hero {
+        position: relative; min-height: 100vh; display: flex; align-items: center;
+        padding: 0 48px; overflow: hidden;
+      }
+      .hero-content { position: relative; z-index: 2; width: 100%; max-width: 1400px; margin: 0 auto; }
+      .hero-eyebrow {
+        font-size: 0.6875rem; letter-spacing: 0.3em; text-transform: uppercase;
+        color: var(--accent-light); margin-bottom: 40px; display: flex; align-items: center; gap: 16px;
+        opacity: 0; transform: translateY(20px);
+      }
+      .hero-eyebrow::before { content: ''; width: 64px; height: 1px; background: var(--accent); }
+      .hero-title {
+        font-family: var(--font-sans); font-size: clamp(4.5rem, 16vw, 18rem); font-weight: 300;
+        line-height: 0.85; letter-spacing: -0.05em; margin-bottom: 48px;
+      }
+      .hero-title .line { display: block; overflow: hidden; }
+      .hero-title .line-inner { display: block; transform: translateY(110%); }
+      .hero-title .serif {
+        font-family: var(--font-serif); font-style: italic; font-weight: 400;
+        font-size: 0.4em; letter-spacing: 0; color: var(--text-dim); margin-left: 0.05em;
+      }
+      .hero-bottom {
+        display: flex; justify-content: space-between; align-items: flex-end; gap: 32px;
+      }
+      .hero-desc {
+        max-width: 380px; font-size: 0.9375rem; line-height: 1.8; color: var(--text-dim);
+        opacity: 0; transform: translateY(20px);
+      }
+      .hero-lottie { width: 260px; height: 260px; opacity: 0; transform: scale(0.9); }
+      .hero-cta { margin-top: 48px; opacity: 0; transform: translateY(20px); }
+      .hero-scroll {
+        position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
+        display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 2;
+        opacity: 0;
+      }
+      .hero-scroll span {
+        font-size: 0.625rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);
+      }
+      .hero-scroll-line {
+        width: 1px; height: 64px; background: linear-gradient(to bottom, var(--accent), transparent);
+        animation: scrollPulse 3s ease-in-out infinite;
+      }
+      @keyframes scrollPulse {
+        0%, 100% { transform: scaleY(1); opacity: 1; }
+        50% { transform: scaleY(0.3); opacity: 0.2; }
+      }
+      @media (max-width: 768px) {
+        .hero { padding: 0 24px; }
+        .hero-bottom { flex-direction: column; align-items: flex-start; }
+        .hero-lottie { width: 160px; height: 160px; }
+      }
+
+      /* MARQUEE */
+      .marquee {
+        padding: 32px 0; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border);
+        overflow: hidden; position: relative; z-index: 2; background: var(--void);
+      }
+      .marquee-track {
+        display: flex; gap: 80px; width: max-content;
+        animation: marquee 35s linear infinite;
+      }
+      .marquee-item {
+        font-size: 0.875rem; font-weight: 300; letter-spacing: 0.15em;
+        text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
+        display: flex; align-items: center; gap: 80px;
+      }
+      .marquee-item::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+      @keyframes marquee { to { transform: translateX(-50%); } }
+
+      /* ABOUT — BENTO GRID */
+      .about-bento {
+        padding: 160px 48px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2;
+      }
+      .bento-label {
+        font-size: 0.6875rem; letter-spacing: 0.25em; text-transform: uppercase;
+        color: var(--accent-light); margin-bottom: 48px;
+      }
+      .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(6, 80px);
+        gap: 16px;
+      }
+      .bento-item {
+        position: relative; overflow: hidden; border-radius: var(--radius);
+        border: 1px solid var(--glass-border);
+        background: var(--surface);
+        backdrop-filter: blur(20px);
+      }
+      .bento-item:hover { border-color: var(--glass-border-hover); }
+      .bento-item img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 1.5s var(--ease-expo), filter 1s;
+        filter: saturate(0.8);
+      }
+      .bento-item:hover img { transform: scale(1.03); filter: saturate(1); }
+      
+      .bento-1 { grid-column: 1 / 8; grid-row: 1 / 5; } /* Main image */
+      .bento-2 { grid-column: 8 / 11; grid-row: 1 / 3; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; }
+      .bento-3 { grid-column: 11 / 13; grid-row: 1 / 3; padding: 24px; display: flex; align-items: center; justify-content: center; }
+      .bento-4 { grid-column: 8 / 13; grid-row: 3 / 5; padding: 32px; display: flex; flex-direction: column; justify-content: flex-end; }
+      .bento-5 { grid-column: 1 / 5; grid-row: 5 / 7; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; }
+      .bento-6 { grid-column: 5 / 9; grid-row: 5 / 7; overflow: hidden; }
+      .bento-7 { grid-column: 9 / 13; grid-row: 5 / 7; padding: 32px; display: flex; flex-direction: column; justify-content: center; }
+
+      .bento-num {
+        font-family: var(--font-serif); font-style: italic; font-size: 3rem; font-weight: 400;
+        color: var(--accent); line-height: 1;
+      }
+      .bento-title {
+        font-family: var(--font-sans); font-size: 1.125rem; font-weight: 500; letter-spacing: -0.01em;
+        margin-bottom: 8px;
+      }
+      .bento-desc {
+        font-size: 0.875rem; color: var(--text-dim); line-height: 1.6;
+      }
+      .bento-stat {
+        font-family: var(--font-sans); font-size: 2.5rem; font-weight: 300; color: var(--text);
+        margin-bottom: 4px;
+      }
+      .bento-stat-label {
+        font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+      }
+
+      @media (max-width: 1024px) {
+        .bento-grid { grid-template-rows: repeat(8, 60px); }
+        .bento-1 { grid-column: 1 / 13; grid-row: 1 / 5; }
+        .bento-2 { grid-column: 1 / 7; grid-row: 5 / 7; }
+        .bento-3 { grid-column: 7 / 13; grid-row: 5 / 7; }
+        .bento-4 { grid-column: 1 / 13; grid-row: 7 / 9; }
+        .bento-5 { grid-column: 1 / 5; grid-row: 9 / 11; }
+        .bento-6 { grid-column: 5 / 9; grid-row: 9 / 11; }
+        .bento-7 { grid-column: 9 / 13; grid-row: 9 / 11; }
+      }
+      @media (max-width: 768px) {
+        .about-bento { padding: 100px 24px; }
+        .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+        .bento-1, .bento-2, .bento-3, .bento-4, .bento-5, .bento-6, .bento-7 {
+          grid-column: 1; grid-row: auto; min-height: 200px;
+        }
+        .bento-1 { min-height: 300px; }
+      }
+
+      /* HORIZONTAL TRENDS */
+      .trends-section { position: relative; z-index: 2; }
+      .trends-header {
+        padding: 160px 48px 80px; max-width: 1400px; margin: 0 auto;
+      }
+      .trends-header h2 {
+        font-family: var(--font-sans); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1;
+      }
+      .trends-header h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+      .trends-wrapper { position: relative; height: 100vh; overflow: hidden; }
+      .trends-track {
+        display: flex; gap: 16px; height: 100%; padding: 0 48px; will-change: transform;
+      }
+      .trend-card {
+        flex-shrink: 0; width: 42vw; min-width: 380px; height: 100%;
+        position: relative; overflow: hidden; border-radius: var(--radius);
+        border: 1px solid var(--glass-border); background: var(--surface);
+        backdrop-filter: blur(20px); cursor: none;
+      }
+      .trend-card .trend-img {
+        width: 100%; height: 65%; overflow: hidden; position: relative;
+      }
+      .trend-card .trend-img img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 1.2s var(--ease-expo), filter 1s;
+        filter: saturate(0.6);
+      }
+      .trend-card:hover .trend-img img { transform: scale(1.05); filter: saturate(0.9); }
+      .trend-card .trend-info {
+        padding: 32px; height: 35%; display: flex; flex-direction: column; justify-content: space-between;
+        border-top: 1px solid var(--glass-border);
+      }
+      .trend-card .trend-num {
+        font-size: 0.6875rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted);
+      }
+      .trend-card .trend-title {
+        font-family: var(--font-sans); font-size: 1.5rem; font-weight: 300; letter-spacing: -0.02em;
+      }
+      .trend-card .trend-cat {
+        font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+      }
+      @media (max-width: 768px) {
+        .trend-card { width: 85vw; min-width: 300px; }
+        .trends-header { padding: 100px 24px 40px; }
+      }
+
+      /* PLAYGROUND */
+      .playground {
+        padding: 160px 48px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2;
+        display: grid; grid-template-columns: 1fr; gap: 80px;
+      }
+      .playground-header { position: sticky; top: 120px; align-self: start; }
+      .playground-header h2 {
+        font-family: var(--font-sans); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1; margin-bottom: 24px;
+      }
+      .playground-header h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+      .playground-header p { font-size: 0.9375rem; color: var(--text-dim); line-height: 1.8; max-width: 320px; }
+      .playground-grid {
+        display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--glass-border);
+        border-radius: var(--radius); overflow: hidden;
+      }
+      .control {
+        background: var(--surface); padding: 40px; display: flex; flex-direction: column; gap: 20px;
+        backdrop-filter: blur(20px);
+      }
+      .control label {
+        display: flex; justify-content: space-between;
+        font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+      }
+      .control .val { color: var(--accent-light); font-variant-numeric: tabular-nums; }
+      input[type="range"] {
+        width: 100%; height: 2px; -webkit-appearance: none; background: var(--glass-border); outline: none; border-radius: 2px;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+        background: var(--accent); border: 3px solid var(--void); cursor: none;
+        transition: transform 0.3s var(--ease-expo);
+      }
+      input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.5); }
+      input[type="color"] {
+        width: 100%; height: 48px; border: 1px solid var(--glass-border); background: var(--void-light);
+        cursor: none; padding: 3px; border-radius: var(--radius-sm);
+      }
+      .playground-preview {
+        background: var(--surface); border: 1px solid var(--glass-border);
+        border-radius: var(--radius); margin-top: 16px; overflow: hidden;
+      }
+      .preview-box {
+        display: flex; align-items: center; justify-content: center; min-height: 300px; padding: 64px;
+        transition: all 0.5s var(--ease-expo);
+      }
+      .preview-text {
+        font-family: var(--font-sans); font-size: 1.5rem; font-weight: 500;
+        transition: all 0.5s var(--ease-expo);
+      }
+      .code-block {
+        background: var(--void); border-top: 1px solid var(--glass-border); padding: 32px;
+        font-family: 'Courier New', monospace; font-size: 0.8125rem; line-height: 1.8;
+        color: var(--text-dim); overflow-x: auto;
+      }
+      @media (min-width: 1024px) { .playground { grid-template-columns: 280px 1fr; } }
+
+      /* AI */
+      .ai-section { padding: 160px 48px; max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+      .ai-header { text-align: center; margin-bottom: 80px; }
+      .ai-header h2 {
+        font-family: var(--font-sans); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1;
+      }
+      .ai-header h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+      .ai-chat {
+        background: var(--surface); border: 1px solid var(--glass-border);
+        border-radius: var(--radius); backdrop-filter: blur(20px); overflow: hidden;
+      }
+      .ai-bar {
+        display: flex; align-items: center; gap: 16px; padding: 24px 32px;
+        border-bottom: 1px solid var(--glass-border);
+      }
+      .ai-dot {
+        width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+        animation: breathe 4s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.4; transform: scale(0.8); }
+      }
+      .ai-name { font-size: 0.875rem; font-weight: 500; }
+      .ai-status { font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
+      .ai-messages {
+        padding: 32px; min-height: 240px; max-height: 400px; overflow-y: auto;
+        display: flex; flex-direction: column; gap: 16px;
+      }
+      .msg {
+        display: flex; gap: 12px; animation: msgUp 0.6s var(--ease-expo);
+      }
+      @keyframes msgUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .msg.user { flex-direction: row-reverse; }
+      .msg-bubble {
+        padding: 16px 20px; font-size: 0.9375rem; line-height: 1.7; max-width: 80%;
+        border-radius: 20px;
+      }
+      .msg.user .msg-bubble { background: var(--text); color: var(--void); border-radius: 20px 20px 4px 20px; }
+      .msg.bot .msg-bubble { background: var(--void-light); color: var(--text); border: 1px solid var(--glass-border); border-radius: 20px 20px 20px 4px; }
+      .ai-input-wrap {
+        display: flex; gap: 1px; border-top: 1px solid var(--glass-border);
+      }
+      .ai-input {
+        flex: 1; padding: 20px 32px; background: var(--surface); border: none;
+        color: var(--text); font-family: var(--font-sans); font-size: 0.9375rem; outline: none;
+      }
+      .ai-input::placeholder { color: var(--text-muted); }
+      .ai-send {
+        width: 64px; background: var(--text); color: var(--void);
+        display: flex; align-items: center; justify-content: center;
+        transition: background 0.4s;
+      }
+      .ai-send:hover { background: var(--accent); }
+      @media (max-width: 768px) { .ai-section { padding: 100px 24px; } }
+
+      /* SHOWCASE — BENTO MASONRY */
+      .showcase { padding: 160px 48px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+      .showcase-header { margin-bottom: 64px; }
+      .showcase-header h2 {
+        font-family: var(--font-sans); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1;
+      }
+      .showcase-header h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+      .showcase-grid {
+        display: grid; grid-template-columns: 1fr; gap: 16px;
+      }
+      .showcase-item {
+        position: relative; overflow: hidden; border-radius: var(--radius);
+        border: 1px solid var(--glass-border); background: var(--surface);
+        backdrop-filter: blur(20px); cursor: none; aspect-ratio: 16/10;
+      }
+      .showcase-item:nth-child(3) { aspect-ratio: 3/4; }
+      .showcase-item img {
+        width: 100%; height: 100%; object-fit: cover;
+        transition: transform 1.5s var(--ease-expo), filter 1s;
+        filter: saturate(0.5);
+      }
+      .showcase-item:hover img { transform: scale(1.03); filter: saturate(0.85); }
+      .showcase-info {
+        position: absolute; bottom: 0; left: 0; right: 0; padding: 40px;
+        background: linear-gradient(to top, rgba(2,2,4,0.95) 0%, transparent 100%);
+        transform: translateY(20px); opacity: 0;
+        transition: all 0.6s var(--ease-expo);
+      }
+      .showcase-item:hover .showcase-info { transform: translateY(0); opacity: 1; }
+      .showcase-info h3 {
+        font-family: var(--font-sans); font-size: 1.25rem; font-weight: 300; margin-bottom: 8px;
+      }
+      .showcase-tags { display: flex; gap: 12px; }
+      .showcase-tag {
+        font-size: 0.625rem; letter-spacing: 0.1em; text-transform: uppercase;
+        color: var(--text-muted); padding: 4px 10px; border: 1px solid var(--glass-border); border-radius: 100px;
+      }
+      @media (min-width: 768px) {
+        .showcase-grid { grid-template-columns: repeat(2, 1fr); }
+        .showcase-item:nth-child(3) { grid-row: span 2; }
+      }
+
+      /* RESOURCES */
+      .resources { padding: 160px 48px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+      .resources-header { margin-bottom: 64px; }
+      .resources-header h2 {
+        font-family: var(--font-sans); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1;
+      }
+      .resources-header h2 em { font-family: var(--font-serif); font-style: italic; color: var(--accent); }
+      .resource-row {
+        display: grid; grid-template-columns: 100px 1fr auto; gap: 32px; align-items: center;
+        padding: 32px 0; border-bottom: 1px solid var(--glass-border);
+        transition: all 0.5s; cursor: none; position: relative;
+      }
+      .resource-row::before {
+        content: ''; position: absolute; inset: 0; background: var(--surface);
+        border-radius: var(--radius); opacity: 0; transition: opacity 0.5s; z-index: -1;
+      }
+      .resource-row:hover::before { opacity: 1; }
+      .resource-row:hover { padding: 32px; margin: 0 -32px; }
+      .resource-thumb { width: 100px; height: 100px; overflow: hidden; border-radius: var(--radius-sm); flex-shrink: 0; }
+      .resource-thumb img {
+        width: 100%; height: 100%; object-fit: cover;
+        filter: saturate(0.3); transition: filter 0.6s, transform 0.6s;
+      }
+      .resource-row:hover .resource-thumb img { filter: saturate(0.8); transform: scale(1.05); }
+      .resource-title { font-size: 1.125rem; font-weight: 400; margin-bottom: 6px; }
+      .resource-desc { font-size: 0.875rem; color: var(--text-dim); line-height: 1.6; }
+      .resource-arrow {
+        color: var(--text-muted); transition: color 0.4s, transform 0.4s var(--ease-expo);
+      }
+      .resource-row:hover .resource-arrow { color: var(--accent); transform: translateX(8px); }
+      @media (max-width: 768px) {
+        .resource-row { grid-template-columns: 72px 1fr; gap: 16px; }
+        .resource-arrow { display: none; }
+        .resources { padding: 100px 24px; }
+      }
+
+      /* FOOTER */
+      .footer { padding: 160px 48px 48px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
+      .footer-mega {
+        font-family: var(--font-sans); font-size: clamp(6rem, 18vw, 22rem); font-weight: 300;
+        line-height: 0.8; letter-spacing: -0.05em; color: var(--text-muted);
+        margin-bottom: 160px; overflow: hidden; opacity: 0.15;
+      }
+      .footer-mega .line { display: block; transform: translateY(110%); }
+      .footer-grid {
+        display: grid; grid-template-columns: 1fr; gap: 48px;
+        padding-top: 48px; border-top: 1px solid var(--glass-border);
+      }
+      .footer-col h4 {
+        font-size: 0.6875rem; letter-spacing: 0.2em; text-transform: uppercase;
+        color: var(--text-muted); margin-bottom: 24px;
+      }
+      .footer-col a {
+        display: block; font-size: 0.9375rem; color: var(--text-dim);
+        padding: 6px 0; transition: color 0.4s, transform 0.4s;
+      }
+      .footer-col a:hover { color: var(--text); transform: translateX(4px); }
+      .footer-bottom {
+        margin-top: 120px; padding-top: 24px; border-top: 1px solid var(--glass-border);
+        display: flex; justify-content: space-between;
+        font-size: 0.6875rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+      }
+      @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+      @media (max-width: 768px) { .footer { padding: 100px 24px 32px; } }
+    }
+
+    @layer utils {
+      .reveal { opacity: 0; transform: translateY(60px); }
+      .reveal.visible { opacity: 1; transform: translateY(0); transition: opacity 1.2s var(--ease-expo), transform 1.2s var(--ease-expo); }
+    }
+  </style>
 </head>
-<body class="bg-gray-100">
-    <div id="app" v-cloak>
-        <!-- Navigation -->
-        <nav :class="{'bg-transparent': !scrolled, 'bg-white shadow-lg': scrolled}" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center py-4">
-                    <a href="#" :class="{'text-white': !scrolled, 'text-gray-800': scrolled}" class="text-xl sm:text-2xl font-bold transition-colors duration-300">
-                        Web Trends Explorer 
-                    </a>
-                    <div class="hidden md:flex space-x-4 lg:space-x-8">
-                        <a v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id)" 
-                           :class="{'text-white hover:text-gray-300': !scrolled, 'text-gray-800 hover:text-gray-600': scrolled}"
-                           class="cursor-pointer transition-colors duration-300">
-                            {{ item.name }}
-                        </a>
-                    </div>
-                    <button @click="toggleMobileMenu" class="md:hidden text-white focus:outline-none">
-                        <i :class="{'fa-bars': !mobileMenuOpen, 'fa-times': mobileMenuOpen}" class="fas text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </nav>
+<body>
 
-        <!-- Mobile Menu -->
-        <div v-show="mobileMenuOpen" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 flex items-center justify-center">
-            <div class="text-center">
-                <div class="space-y-6">
-                    <a v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id); toggleMobileMenu()"
-                       class="block text-white text-xl hover:text-gray-300 transition-colors duration-300">
-                        {{ item.name }}
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hero Section -->
-        <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-            <!-- Edgeless Media Background -->
-            <div class="absolute inset-0 overflow-hidden">
-                <img src="https://source.unsplash.com/random/1920x1080?abstract" alt="Abstract Background" class="w-full h-full object-cover filter blur-sm">
-            </div>
-
-            <!-- Glassmorphism Overlay -->
-            <div class="absolute inset-0 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg"></div>
-
-            <!-- Content -->
-            <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div class="bento-grid">
-                    <!-- Main Content -->
-                    <div class="bento-item col-span-2 space-y-6 text-center sm:text-left">
-                        <h1 class="experimental-text leading-tight">
-                            Web Design Revolution
-                        </h1>
-                        <p class="text-lg sm:text-xl text-gray-200 max-w-2xl">
-                            Explore cutting-edge trends, interact with live examples, and elevate your projects with our innovative tools and community-driven insights.
-                        </p>
-                        <a href="#trends" class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-8 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 micro-interaction">
-                            Explore Trends
-                        </a>
-                    </div>
-                    
-                    <!-- Lottie Animation -->
-                    <div class="bento-item hidden sm:block">
-                        <lottie-player 
-                            src="https://assets3.lottiefiles.com/packages/lf20_iorpbol0.json"
-                            background="transparent"
-                            speed="1"
-                            style="width: 100%; height: 300px;"
-                            loop
-                            autoplay>
-                        </lottie-player>
-                    </div>
-
-                    <!-- Feature Highlights -->
-                    <div class="bento-item">
-                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-4">Key Features</h3>
-                        <ul class="text-gray-200 space-y-2">
-                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Interactive Demos</li>
-                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i> AI Design Assistant</li>
-                            <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Community Showcase</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Micro-Interactions -->
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce micro-interaction">
-                <svg class="w-6 h-6 text-white" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                </svg>
-            </div>
-        </section>
-
-        <!-- Trends Section -->
-        <section id="trends" class="section py-20 bg-white">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Latest Web Design Trends</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="trend in trends" :key="trend.id" class="trend-card bg-white rounded-lg shadow-lg overflow-hidden">
-                        <div class="relative h-48 sm:h-64">
-                            <img :src="trend.image" :alt="trend.title" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                                <button @click="openTrendDemo(trend)" class="bg-white text-purple-600 font-bold py-2 px-4 rounded-full hover:bg-purple-600 hover:text-white transition-colors duration-300">
-                                    View Live Demo
-                                </button>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-xl sm:text-2xl font-semibold mb-2">{{ trend.title }}</h3>
-                            <p class="text-gray-600 mb-4">{{ trend.description }}</p>
-                            <div class="flex justify-between items-center">
-                                <button @click="downloadCode(trend)" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
-                                    <i class="fas fa-download mr-2"></i>Download Code
-                                </button>
-                                <span class="text-sm text-gray-500">{{ trend.category }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Interactive Playground -->
-        <section id="interactive-playground" class="section py-20 bg-gray-100">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Interactive Playground</h2>
-                <div class="bg-white rounded-lg shadow-lg p-6 sm:p-8">
-                    <div class="mb-8">
-                        <h3 class="text-xl sm:text-2xl font-semibold mb-4">CSS Generator</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="bgColor">
-                                    Background Color
-                                </label>
-                                <input v-model="cssGenerator.bgColor" type="color" id="bgColor" class="w-full h-10 rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="textColor">
-                                    Text Color
-                                </label>
-                                <input v-model="cssGenerator.textColor" type="color" id="textColor" class="w-full h-10 rounded-md">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="borderRadius">
-                                    Border Radius
-                                </label>
-                                <input v-model="cssGenerator.borderRadius" type="range" id="borderRadius" min="0" max="50" class="w-full">
-                            </div>
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2" for="padding">
-                                    Padding
-                                </label>
-                                <input v-model="cssGenerator.padding" type="range" id="padding" min="0" max="50" class="w-full">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-8">
-                        <div class="flex-1">
-                            <h4 class="text-lg sm:text-xl font-semibold mb-4">Preview</h4>
-                            <div class="border rounded-lg overflow-hidden" :style="generatedCSS">
-                                <p class="text-center py-4">Preview Text</p>
-                            </div>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="text-lg sm:text-xl font-semibold mb-4">Generated CSS</h4>
-                            <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code>{{ generatedCSSCode }}</code></pre>
-                            <button @click="copyCSS" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                                <i class="fas fa-copy mr-2"></i>Copy CSS
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AI Design Assistant -->
-        <section id="ai-assistant" class="section py-20 bg-white">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">AI Design Assistant</h2>
-              <div class="max-w-3xl mx-auto">
-                  <div class="bg-gray-100 rounded-lg p-6 mb-8">
-                      <h3 class="text-xl sm:text-2xl font-semibold mb-4">Ask the AI</h3>
-                      <textarea v-model="aiPrompt" rows="4" class="w-full p-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600" placeholder="Describe your design challenge or ask for suggestions..."></textarea>
-                      <button @click="generateAIResponse" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                          <i class="fas fa-robot mr-2"></i>Generate Response
-                      </button>
-                  </div>
-                  <div v-if="aiResponse" class="bg-white rounded-lg shadow-lg p-6">
-                      <h4 class="text-lg sm:text-xl font-semibold mb-4">AI Response:</h4>
-                      <p class="text-gray-700">{{ aiResponse }}</p>
-                  </div>
-              </div>
-          </div>
-      </section>
-
-      <!-- Community Showcase -->
-      <section id="community" class="section py-20 bg-gray-100">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Community Showcase</h2>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div v-for="project in communityProjects" :key="project.id" class="bg-white rounded-lg shadow-lg overflow-hidden">
-                      <img :src="project.image" :alt="project.title" class="w-full h-48 object-cover">
-                      <div class="p-6">
-                          <h3 class="text-xl font-semibold mb-2">{{ project.title }}</h3>
-                          <p class="text-gray-600 mb-4">{{ project.description }}</p>
-                          <div class="flex justify-between items-center">
-                              <a :href="project.link" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
-                                  View Project
-                                  <i class="fas fa-external-link-alt ml-1"></i>
-                              </a>
-                              <div class="flex items-center">
-                                  <img :src="project.authorAvatar" :alt="project.author" class="w-8 h-8 rounded-full mr-2">
-                                  <span class="text-sm text-gray-500">{{ project.author }}</span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="text-center mt-12">
-                  <button @click="openSubmitProjectModal" class="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-700 transition-colors duration-300">
-                      <i class="fas fa-plus-circle mr-2"></i>Submit Your Project
-                  </button>
-              </div>
-          </div>
-      </section>
-
-      <!-- Learning Resources -->
-      <section id="resources" class="section py-20 bg-white">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 class="text-3xl sm:text-4xl font-bold mb-12 text-center">Learning Resources</h2>
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div v-for="resource in learningResources" :key="resource.id" class="bg-gray-100 rounded-lg p-6 hover:shadow-lg transition duration-300">
-                      <i :class="resource.icon" class="text-4xl text-purple-600 mb-4"></i>
-                      <h3 class="text-xl font-semibold mb-2">{{ resource.title }}</h3>
-                      <p class="text-gray-600 mb-4">{{ resource.description }}</p>
-                      <a :href="resource.link" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300 flex items-center">
-                          Learn More
-                          <i class="fas fa-arrow-right ml-2"></i>
-                      </a>
-                  </div>
-              </div>
-          </div>
-      </section>
-
-      <!-- Footer -->
-      <footer class="bg-gray-900 text-white py-12">
-          <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  <div>
-                      <h3 class="text-xl sm:text-2xl font-semibold mb-4">Web Trends Explorer </h3>
-                      <p class="text-gray-400">Empowering designers and developers to create cutting-edge web experiences.</p>
-                  </div>
-                  <div>
-                      <h4 class="text-lg sm:text-xl font-semibold mb-4">Quick Links</h4>
-                      <ul class="space-y-2">
-                          <li v-for="item in menuItems" :key="item.id">
-                              <a @click="scrollToSection(item.id)" class="hover:text-gray-300 transition duration-300 cursor-pointer">
-                                  {{ item.name }}
-                              </a>
-                          </li>
-                      </ul>
-                  </div>
-                  <div>
-                      <h4 class="text-lg sm:text-xl font-semibold mb-4">Connect</h4>
-                      <div class="flex space-x-4">
-                          <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                              <i class="fab fa-twitter text-2xl"></i>
-                          </a>
-                          <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                              <i class="fab fa-github text-2xl"></i>
-                          </a>
-                          <a href="#" class="text-gray-400 hover:text-white transition duration-300">
-                              <i class="fab fa-linkedin text-2xl"></i>
-                          </a>
-                      </div>
-                  </div>
-                  <div>
-                      <h4 class="text-lg sm:text-xl font-semibold mb-4">Newsletter</h4>
-                      <form @submit.prevent="subscribeNewsletter" class="flex">
-                          <input type="email" v-model="newsletterEmail" placeholder="Your email" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                          <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700 transition-colors duration-300">
-                              Subscribe
-                          </button>
-                      </form>
-                  </div>
-              </div>
-              <div class="border-t border-gray-800 mt-8 pt-8 text-center">
-                  <p>&copy; 2024 Web Trends Explorer  All rights reserved.</p>
-              </div>
-          </div>
-      </footer>
-
-      <!-- Modals -->
-      <!-- Trend Demo Modal -->
-      <div v-if="selectedTrend" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div class="bg-white rounded-lg p-6 sm:p-8 max-w-4xl w-full max-h-screen overflow-y-auto scrollbar-hide">
-              <div class="flex justify-between items-center mb-4">
-                  <h2 class="text-2xl sm:text-3xl font-bold">{{ selectedTrend.title }}</h2>
-                  <button @click="closeTrendDemo" class="text-gray-500 hover:text-gray-700">
-                      <i class="fas fa-times text-2xl"></i>
-                  </button>
-              </div>
-              <p class="text-gray-600 mb-6">{{ selectedTrend.description }}</p>
-              <div class="mb-8 bg-gray-100 p-6 rounded-lg">
-                  <h3 class="text-xl font-semibold mb-4">Live Demo</h3>
-                  <div class="trend-demo" v-html="selectedTrend.liveDemo"></div>
-              </div>
-              <div class="mb-8">
-                  <h3 class="text-xl font-semibold mb-4">Code Snippet</h3>
-                  <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code>{{ selectedTrend.codeSnippet }}</code></pre>
-                  <button @click="copyCode(selectedTrend.codeSnippet)" class="mt-4 bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                      <i class="fas fa-copy mr-2"></i>Copy Code
-                  </button>
-              </div>
-              <div>
-                  <h3 class="text-xl font-semibold mb-4">Resources</h3>
-                  <ul class="list-disc list-inside">
-                      <li v-for="resource in selectedTrend.resources" :key="resource.url">
-                          <a :href="resource.url" target="_blank" class="text-purple-600 hover:text-purple-800 transition-colors duration-300">
-                              {{ resource.title }}
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-
-      <!-- Submit Project Modal -->
-      <div v-if="showSubmitProjectModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div class="bg-white rounded-lg p-6 sm:p-8 max-w-2xl w-full">
-              <div class="flex justify-between items-center mb-4">
-                  <h2 class="text-2xl sm:text-3xl font-bold">Submit Your Project</h2>
-                  <button @click="closeSubmitProjectModal" class="text-gray-500 hover:text-gray-700">
-                      <i class="fas fa-times text-2xl"></i>
-                  </button>
-              </div>
-              <form @submit.prevent="submitProject">
-                  <div class="mb-4">
-                      <label for="projectTitle" class="block text-gray-700 text-sm font-bold mb-2">Project Title</label>
-                      <input v-model="newProject.title" type="text" id="projectTitle" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                  </div>
-                  <div class="mb-4">
-                      <label for="projectDescription" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                      <textarea v-model="newProject.description" id="projectDescription" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required></textarea>
-                  </div>
-                  <div class="mb-4">
-                      <label for="projectLink" class="block text-gray-700 text-sm font-bold mb-2">Project Link</label>
-                      <input v-model="newProject.link" type="url" id="projectLink" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                  </div>
-                  <div class="mb-4">
-                      <label for="projectImage" class="block text-gray-700 text-sm font-bold mb-2">Project Image</label>
-                      <input type="file" id="projectImage" @change="handleImageUpload" accept="image/*" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600" required>
-                  </div>
-                  <button type="submit" class="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded hover:bg-purple-700 transition-colors duration-300">
-                      <i class="fas fa-paper-plane mr-2"></i>Submit Project
-                  </button>
-              </form>
-          </div>
-      </div>
+  <!-- AMBIENT ORBS -->
+  <div class="ambient">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <script>
-      const app = Vue.createApp({
-          data() {
-              return {
-                  scrolled: false,
-                  mobileMenuOpen: false,
-                  menuItems: [
-                      { id: 'trends', name: 'Trends' },
-                      { id: 'interactive-playground', name: 'Playground' },
-                      { id: 'ai-assistant', name: 'AI Assistant' },
-                      { id: 'community', name: 'Community' },
-                      { id: 'resources', name: 'Resources' },
-                  ],
-                  trends: [
-                      {
-    id: 1,
-    title: 'Glassmorphism',
-    description: 'Create stunning frosted glass effects in your UI.',
-    image: 'glassmorphism.jpg',
-    category: 'UI Design',
-    liveDemo: `
-        <div class="bg-gradient-to-r from-purple-400 to-pink-500 p-8 rounded-lg">
-            <div class="bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-lg p-6 shadow-lg">
-                <h3 class="text-white text-2xl font-bold mb-4">Glassmorphism Effect</h3>
-                <p class="text-white text-opacity-80">This is an example of the glassmorphism trend in action.</p>
-            </div>
-        </div>
-    `,
-    codeSnippet: `
-.glassmorphism {
-background: rgba(255, 255, 255, 0.2);
-backdrop-filter: blur(10px);
-border-radius: 10px;
-padding: 20px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-    `,
-    resources: [
-        { title: 'Glassmorphism Generator', url: 'https://hype4.academy/tools/glassmorphism-generator' },
-        { title: 'CSS-Tricks: Glassmorphism', url: 'https://css-tricks.com/glassmorphism-create-a-glass-effect-with-html-and-css/' },
-    ],
-},
-{
-    id: 2,
-    title: 'Neumorphism',
-    description: 'Soft UI design with subtle shadows for a modern look.',
-    image: 'neumorphism.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="bg-gray-200 p-8 rounded-lg">
-        <div class="neumorphism-box">
-          <h3 class="text-gray-800 text-2xl font-bold mb-4">Neumorphism Design</h3>
-          <p class="text-gray-600">Soft and elegant user interface elements.</p>
+  <!-- GRAIN -->
+  <div class="grain"></div>
+
+  <!-- PRELOADER -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-shuffle" id="preloaderShuffle">Initializing</div>
+    <div class="preloader-counter" id="preloaderNum">00</div>
+    <div class="preloader-track">
+      <div class="preloader-fill" id="preloaderFill"></div>
+    </div>
+  </div>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-label"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">UI TRENDS</a>
+    <div class="nav-links">
+      <a href="#about" data-text="Index"><span>Index</span></a>
+      <a href="#playground" data-text="Lab"><span>Lab</span></a>
+      <a href="#ai" data-text="AI"><span>AI</span></a>
+      <a href="#showcase" data-text="Archive"><span>Archive</span></a>
+      <a href="#resources" data-text="Knowledge"><span>Knowledge</span></a>
+    </div>
+    <button class="nav-trigger" id="navTrigger" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-overlay" id="mobileOverlay">
+    <button class="mobile-close" id="mobileClose" aria-label="Close">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <a href="#about">Index</a>
+    <a href="#playground">Lab</a>
+    <a href="#ai">AI</a>
+    <a href="#showcase">Archive</a>
+    <a href="#resources">Knowledge</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Web Design Revolution</div>
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">UI</span></span>
+        <span class="line"><span class="line-inner">TRENDS <span class="serif">Explorer</span></span></span>
+      </h1>
+      <div class="hero-bottom">
+        <p class="hero-desc">A curated index of the patterns, animations, and visual systems shaping the next generation of interfaces. No filler. Only signal.</p>
+        <div class="hero-lottie" id="heroLottie"></div>
+      </div>
+      <div class="hero-cta">
+        <a href="#about" class="btn-glow magnetic">Explore Index</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee">
+    <div class="marquee-track">
+      <span class="marquee-item">Glassmorphism</span>
+      <span class="marquee-item">Neumorphism</span>
+      <span class="marquee-item">Parallax</span>
+      <span class="marquee-item">Micro-interactions</span>
+      <span class="marquee-item">Skeleton Loading</span>
+      <span class="marquee-item">Dark Mode</span>
+      <span class="marquee-item">Morphing SVG</span>
+      <span class="marquee-item">Glassmorphism</span>
+      <span class="marquee-item">Neumorphism</span>
+      <span class="marquee-item">Parallax</span>
+      <span class="marquee-item">Micro-interactions</span>
+      <span class="marquee-item">Skeleton Loading</span>
+      <span class="marquee-item">Dark Mode</span>
+      <span class="marquee-item">Morphing SVG</span>
+    </div>
+  </div>
+
+  <!-- ABOUT — BENTO GRID WITH UPLOADED IMAGE -->
+  <section class="about-bento" id="about">
+    <div class="bento-label">Philosophy</div>
+    <div class="bento-grid">
+      <div class="bento-item bento-1 tilt-card">
+        <div class="tilt-shine"></div>
+        <div class="tilt-content" style="width:100%;height:100%;">
+          <img src="4sjpy.jpg" alt="UI Design Reference" style="width:100%;height:100%;object-fit:cover;">
         </div>
       </div>
-    `,
-    codeSnippet: `
-.neumorphism-box {
-  background: #e0e0e0;
-  border-radius: 50px;
-  box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-  padding: 20px;
-}
-    `,
-    resources: [
-      { title: 'Neumorphism.io', url: 'https://neumorphism.io/' },
-      { title: 'CSS-Tricks: Neumorphism', url: 'https://css-tricks.com/neumorphism-and-css/' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Micro-interactions',
-    description: 'Small, engaging animations that enhance user experience.',
-    image: 'micro-interactions.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="bg-white p-8 rounded-lg">
-        <button class="micro-interaction-btn">
-          <span>Hover me</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <div class="bento-item bento-2 glass">
+        <div class="bento-num">01</div>
+        <div>
+          <div class="bento-title">The Index</div>
+          <div class="bento-desc">Every pattern is a living system. Copy, tweak, observe.</div>
+        </div>
+      </div>
+      <div class="bento-item bento-3 glass" style="display:flex;align-items:center;justify-content:center;">
+        <div class="bento-stat">50+</div>
+      </div>
+      <div class="bento-item bento-4 glass">
+        <div class="bento-desc">From glassmorphism to neumorphism, from micro-interactions to scroll-driven choreography. Built for professionals who refuse to settle.</div>
+        <div class="bento-stat-label">Active Trends</div>
+      </div>
+      <div class="bento-item bento-5 glass">
+        <div class="bento-stat">12K</div>
+        <div class="bento-stat-label">Community Designers</div>
+      </div>
+      <div class="bento-item bento-6">
+        <img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/glassmorphism-cards.jpg" alt="Glassmorphism" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="bento-item bento-7 glass">
+        <div class="bento-num">02</div>
+        <div class="bento-title">Precision & Intuition</div>
+        <div class="bento-desc">Where engineering meets art direction.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRENDS — HORIZONTAL SCROLL -->
+  <section class="trends-section" id="trends">
+    <div class="trends-header reveal">
+      <h2>The <em>Index</em></h2>
+    </div>
+    <div class="trends-wrapper">
+      <div class="trends-track" id="trendsTrack">
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/3d-card-flip.jpg" alt="3D Card" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">01</div><div class="trend-title">3D Card Flip</div><div class="trend-cat">Interaction</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/animated-checkboxes.jpg" alt="Checkboxes" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">02</div><div class="trend-title">Animated Checkboxes</div><div class="trend-cat">Animation</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/animated-gradients.jpg" alt="Gradients" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">03</div><div class="trend-title">Animated Gradients</div><div class="trend-cat">Visual</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/animated-hamburger.jpg" alt="Hamburger" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">04</div><div class="trend-title">Animated Hamburger</div><div class="trend-cat">Animation</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/animated-progress-bar.jpg" alt="Progress" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">05</div><div class="trend-title">Progress Bars</div><div class="trend-cat">Animation</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/dark-mode-toggle.jpg" alt="Dark Mode" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">06</div><div class="trend-title">Dark Mode Toggle</div><div class="trend-cat">Interaction</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/floating-labels.jpg" alt="Labels" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">07</div><div class="trend-title">Floating Labels</div><div class="trend-cat">Interaction</div></div>
+        </div>
+        <div class="trend-card tilt-card">
+          <div class="trend-img"><div class="tilt-shine"></div><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/glassmorphism.jpg" alt="Glassmorphism" loading="lazy"></div>
+          <div class="trend-info"><div class="trend-num">08</div><div class="trend-title">Glassmorphism</div><div class="trend-cat">Visual</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYGROUND -->
+  <section class="playground" id="playground">
+    <div class="playground-header reveal">
+      <h2>The <em>Lab</em></h2>
+      <p>Build and preview CSS instantly. Copy the generated code.</p>
+    </div>
+    <div class="reveal">
+      <div class="playground-grid">
+        <div class="control">
+          <label>Background <span class="val" id="bgVal">#6366f1</span></label>
+          <input type="color" id="bgColor" value="#6366f1">
+        </div>
+        <div class="control">
+          <label>Text Color <span class="val" id="txtVal">#ffffff</span></label>
+          <input type="color" id="txtColor" value="#ffffff">
+        </div>
+        <div class="control">
+          <label>Radius <span class="val" id="radVal">16px</span></label>
+          <input type="range" id="radius" min="0" max="50" value="16">
+        </div>
+        <div class="control">
+          <label>Padding <span class="val" id="padVal">32px</span></label>
+          <input type="range" id="padding" min="8" max="80" value="32">
+        </div>
+        <div class="control">
+          <label>Font Size <span class="val" id="fsVal">20px</span></label>
+          <input type="range" id="fontSize" min="12" max="48" value="20">
+        </div>
+        <div class="control">
+          <label>Shadow <span class="val" id="shVal">24px</span></label>
+          <input type="range" id="shadow" min="0" max="60" value="24">
+        </div>
+      </div>
+      <div class="playground-preview">
+        <div class="preview-box" id="pBox"><span class="preview-text" id="pText">Preview</span></div>
+        <div class="code-block" id="codeOut">.my-element {
+  background-color: #6366f1;
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  font-size: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI -->
+  <section class="ai-section" id="ai">
+    <div class="ai-header reveal">
+      <h2>Design <em>Intelligence</em></h2>
+    </div>
+    <div class="ai-chat reveal">
+      <div class="ai-bar">
+        <div class="ai-dot"></div>
+        <div class="ai-name">Design Assistant</div>
+        <div class="ai-status">Online</div>
+      </div>
+      <div class="ai-messages" id="aiMessages">
+        <div class="msg bot"><div class="msg-bubble">Hello. Ask me about any UI trend, color theory, or layout best practices.</div></div>
+      </div>
+      <div class="ai-input-wrap">
+        <input type="text" class="ai-input" id="aiInput" placeholder="Ask about glassmorphism, neumorphism...">
+        <button class="ai-send" id="aiSend" aria-label="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
         </button>
       </div>
-    `,
-    codeSnippet: `
-.micro-interaction-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+    </div>
+  </section>
 
-.micro-interaction-btn:hover {
-  background-color: #2980b9;
-  transform: translateX(5px);
-}
-
-.micro-interaction-btn svg {
-  transition: transform 0.3s ease;
-}
-
-.micro-interaction-btn:hover svg {
-  transform: translateX(5px);
-}
-    `,
-    resources: [
-      { title: 'Microinteractions: Design with Details', url: 'https://www.nngroup.com/articles/microinteractions/' },
-      { title: 'The Importance of Micro-Interactions', url: 'https://uxdesign.cc/micro-interactions-why-when-and-how-to-use-them-to-boost-the-ux-17094b3baaa0' },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Dark Mode Toggle',
-    description: 'Implement a smooth dark mode transition for better user experience.',
-    image: 'dark-mode-toggle.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="dark-mode-demo">
-        <div class="content">
-          <h3>Dark Mode Toggle</h3>
-          <p>Click the switch to toggle dark mode.</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="darkModeToggle">
-          <span class="slider round"></span>
-        </label>
+  <!-- SHOWCASE -->
+  <section class="showcase" id="showcase">
+    <div class="showcase-header reveal">
+      <h2>Community <em>Archive</em></h2>
+    </div>
+    <div class="showcase-grid">
+      <div class="showcase-item tilt-card reveal">
+        <div class="tilt-shine"></div>
+        <img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/glassmorphism-cards.jpg" alt="Dashboard" loading="lazy">
+        <div class="showcase-info"><h3>Glassmorphism Dashboard</h3><div class="showcase-tags"><span class="showcase-tag">Dashboard</span><span class="showcase-tag">React</span></div></div>
       </div>
-    `,
-    codeSnippet: `
-.dark-mode-demo {
-  padding: 20px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.dark-mode-demo.dark {
-  background-color: #333;
-  color: #fff;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-    `,
-    resources: [
-      { title: 'Implementing Dark Mode', url: 'https://css-tricks.com/a-complete-guide-to-dark-mode-on-the-web/' },
-      { title: 'Dark Mode UI Design', url: 'https://uxplanet.org/8-tips-for-dark-theme-design-8dfc2f8f7ab6' },
-    ],
-  },
-  {
-    id: 5,
-    title: 'Animated Gradients',
-    description: 'Create eye-catching animated gradient backgrounds.',
-    image: 'animated-gradients.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="animated-gradient">
-        <h3>Animated Gradient Background</h3>
-        <p>Watch the colors shift and change.</p>
+      <div class="showcase-item tilt-card reveal">
+        <div class="tilt-shine"></div>
+        <img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/neumorphism.jpg" alt="UI Kit" loading="lazy">
+        <div class="showcase-info"><h3>Neumorphism UI Kit</h3><div class="showcase-tags"><span class="showcase-tag">UI Kit</span><span class="showcase-tag">Figma</span></div></div>
       </div>
-    `,
-    codeSnippet: `
-.animated-gradient {
-  width: 100%;
-  height: 300px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-    `,
-    resources: [
-      { title: 'CSS Gradient Animator', url: 'https://www.gradient-animator.com/' },
-      { title: 'Animated Gradients in CSS', url: 'https://medium.com/@dave_lunny/animating-css-gradients-using-only-css-d2fd7671e759' },
-    ],
-  },
-  {
-    id: 6,
-    title: 'Parallax Scrolling',
-    description: 'Create depth and immersion with parallax scrolling effects.',
-    image: 'parallax-scrolling.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="parallax-container">
-        <div class="parallax-layer back">
-          <h2>Background Layer</h2>
-        </div>
-        <div class="parallax-layer middle">
-          <h2>Middle Layer</h2>
-        </div>
-        <div class="parallax-layer front">
-          <h2>Foreground Layer</h2>
-        </div>
+      <div class="showcase-item tilt-card reveal">
+        <div class="tilt-shine"></div>
+        <img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/parallax-scrolling.jpg" alt="Parallax" loading="lazy">
+        <div class="showcase-info"><h3>Parallax Landing Page</h3><div class="showcase-tags"><span class="showcase-tag">GSAP</span><span class="showcase-tag">Animation</span></div></div>
       </div>
-    `,
-    codeSnippet: `
-.parallax-container {
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  perspective: 1px;
-}
-
-.parallax-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.back {
-  transform: translateZ(-2px) scale(3);
-}
-
-.middle {
-  transform: translateZ(-1px) scale(2);
-}
-
-.front {
-  transform: translateZ(0);
-}
-    `,
-    resources: [
-      { title: 'Simple Parallax Scrolling Tutorial', url: 'https://medium.com/@dailyfire/pure-css-parallax-simple-tricks-da102d0ffdb9' },
-      { title: 'Parallax Scrolling Examples', url: 'https://bashooka.com/coding/parallax-scrolling-websites/' },
-    ],
-  },
-  {
-    id: 7,
-    title: 'Glassmorphism Cards',
-    description: 'Create stunning card designs with a glassmorphism effect.',
-    image: 'glassmorphism-cards.jpg',
-    category: 'UI Design',
-    liveDemo: `
-      <div class="glassmorphism-bg">
-        <div class="glassmorphism-card">
-          <h3>Glassmorphism Card</h3>
-          <p>A modern and elegant card design.</p>
-        </div>
+      <div class="showcase-item tilt-card reveal">
+        <div class="tilt-shine"></div>
+        <img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/skeleton-loading.jpg" alt="Skeleton" loading="lazy">
+        <div class="showcase-info"><h3>Skeleton Loading System</h3><div class="showcase-tags"><span class="showcase-tag">Performance</span><span class="showcase-tag">Vue</span></div></div>
       </div>
-    `,
-    codeSnippet: `
-.glassmorphism-bg {
-  background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    </div>
+  </section>
 
-.glassmorphism-card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: white;
-  max-width: 300px;
-}
-    `,
-    resources: [
-      { title: 'Glassmorphism in User Interfaces', url: 'https://uxdesign.cc/glassmorphism-in-user-interfaces-1f39bb1308c9' },
-      { title: 'CSS Glassmorphism Generator', url: 'https://ui.glass/generator/' },
-    ],
-  },
-  {
-    id: 8,
-    title: 'Gradient Text',
-    description: 'Apply eye-catching gradients to text elements.',
-    image: 'gradient-text.jpg',
-    category: 'Typography',
-    liveDemo: `
-      <div class="gradient-text-container">
-        <h1 class="gradient-text">Gradient Text</h1>
+  <!-- RESOURCES -->
+  <section class="resources" id="resources">
+    <div class="resources-header reveal">
+      <h2>Knowledge <em>Base</em></h2>
+    </div>
+    <div class="resources-list">
+      <div class="resource-row reveal">
+        <div class="resource-thumb"><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/dark-mode-toggle.jpg" alt="Dark Mode" loading="lazy"></div>
+        <div><div class="resource-title">Mastering Dark Mode</div><div class="resource-desc">CSS variables, prefers-color-scheme, and smooth transitions.</div></div>
+        <div class="resource-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
       </div>
-    `,
-    codeSnippet: `
-.gradient-text-container {
-  background-color: #1a1a1a;
-  padding: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.gradient-text {
-  font-size: 4rem;
-  font-weight: bold;
-  background: linear-gradient(45deg, #ff00ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-}
-    `,
-    resources: [
-      { title: 'CSS Gradient Text Tutorial', url: 'https://css-tricks.com/snippets/css/gradient-text/' },
-      { title: 'Colorful Typography in Web Design', url: 'https://www.smashingmagazine.com/2021/03/css-generators/' },
-    ],
-  },
-  {
-    id: 9,
-    title: 'Morphing SVG',
-    description: 'Create smooth transitions between SVG shapes.',
-    image: 'morphing-svg.jpg',
-    category: 'Animation',
-    liveDemo: `
-      <div class="morphing-svg-container">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#ff5252" d="M0,50 a1,1 0 0,0 100,0">
-            <animate
-              attributeName="d"
-              dur="5s"
-              repeatCount="indefinite"
-              values="M0,50 a1,1 0 0,0 100,0;
-                      M50,0 a1,1 0 0,0 0,100;
-                      M100,50 a1,1 0 0,0 -100,0;
-                      M50,100 a1,1 0 0,0 0,-100;
-                      M0,50 a1,1 0 0,0 100,0"
-            />
-          </path>
-        </svg>
+      <div class="resource-row reveal">
+        <div class="resource-thumb"><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/floating-labels.jpg" alt="Forms" loading="lazy"></div>
+        <div><div class="resource-title">Advanced Form Design</div><div class="resource-desc">Floating labels, validation states, and accessible input patterns.</div></div>
+        <div class="resource-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
       </div>
-    `,
-    codeSnippet: `
-.morphing-svg-container {
-  width: 200px;
-  height: 200px;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.morphing-svg-container svg {
-  width: 100px;
-  height: 100px;
-}
-    `,
-    resources: [
-      { title: 'SVG Morphing with JavaScript', url: 'https://css-tricks.com/svg-shape-morphing-works/' },
-      { title: 'GSAP MorphSVG Plugin', url: 'https://greensock.com/docs/v3/Plugins/MorphSVGPlugin' },
-    ],
-  },
-  {
-    id: 10,
-    title: 'Animated Checkboxes',
-    description: 'Enhance user interaction with animated checkbox designs.',
-    image: 'animated-checkboxes.jpg',
-    category: 'Form Design',
-    liveDemo: `
-      <div class="animated-checkbox-container">
-        <label class="animated-checkbox">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Animated Checkbox
-        </label>
+      <div class="resource-row reveal">
+        <div class="resource-thumb"><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/morphing-svg.jpg" alt="SVG" loading="lazy"></div>
+        <div><div class="resource-title">SVG Morphing Techniques</div><div class="resource-desc">Fluid shape transitions and path animations using GSAP.</div></div>
+        <div class="resource-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
       </div>
-    `,
-    codeSnippet: `
-.animated-checkbox {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 18px;
-  user-select: none;
-}
+      <div class="resource-row reveal">
+        <div class="resource-thumb"><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/animated-progress-bar.jpg" alt="Micro" loading="lazy"></div>
+        <div><div class="resource-title">Micro-Interactions Guide</div><div class="resource-desc">Small animations that make a big difference in user experience.</div></div>
+        <div class="resource-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+      <div class="resource-row reveal">
+        <div class="resource-thumb"><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/tooltip-animations.jpg" alt="Tooltip" loading="lazy"></div>
+        <div><div class="resource-title">Tooltip & Popover Patterns</div><div class="resource-desc">Accessible tooltip implementations with smart positioning.</div></div>
+        <div class="resource-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+      <div class="resource-row reveal">
+        <div class="resource-thumb"><img src="https://raw.githubusercontent.com/sridhar242004/website-UI-TRENDS/main/Screenshot%202024-07-21%20162022.png" alt="Audit" loading="lazy"></div>
+        <div><div class="resource-title">Complete UI Audit</div><div class="resource-desc">Step-by-step walkthrough of auditing and improving interfaces.</div></div>
+        <div class="resource-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+      </div>
+    </div>
+  </section>
 
-.animated-checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-mega" id="footerMega">
+      <span class="line">UI</span>
+      <span class="line">TRENDS</span>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <p style="font-size: 0.9375rem; color: var(--text-dim); line-height: 1.8; max-width: 280px;">
+          Empowering designers with the latest patterns, tools, and AI-powered insights. Built without compromise.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#trends">Index</a>
+        <a href="#playground">Lab</a>
+        <a href="#ai">AI Assistant</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#showcase">Archive</a>
+        <a href="#resources">Knowledge</a>
+        <a href="#">Discord</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span> 2024 UI Trends Explorer</span>
+      <span>Built with precision</span>
+    </div>
+  </footer>
 
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
+  <script>
+    // ═══════════════════════════════════════════
+    // LENIS SMOOTH SCROLL
+    // ═══════════════════════════════════════════
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      smoothTouch: false,
+    });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
 
-.animated-checkbox:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-  .animated-checkbox input:checked ~ .checkmark {
-background-color: #2196F3;
-}
+    // ═══════════════════════════════════════════
+    // PRELOADER WITH TEXT SHUFFLE
+    // ═══════════════════════════════════════════
+    const preloader = document.getElementById('preloader');
+    const preloaderNum = document.getElementById('preloaderNum');
+    const preloaderFill = document.getElementById('preloaderFill');
+    const preloaderShuffle = document.getElementById('preloaderShuffle');
+    const shuffleTexts = ['Initializing', 'Loading Assets', 'Compiling', 'Rendering', 'Ready'];
+    let progress = 0, shuffleIdx = 0;
 
-.checkmark:after {
-content: "";
-position: absolute;
-display: none;
-}
+    function shuffleText() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+      let iterations = 0;
+      const original = shuffleTexts[shuffleIdx];
+      const interval = setInterval(() => {
+        preloaderShuffle.textContent = original.split('').map((char, idx) => {
+          if (idx < iterations) return original[idx];
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join('');
+        if (iterations >= original.length) clearInterval(interval);
+        iterations += 1/3;
+      }, 30);
+    }
 
-.animated-checkbox input:checked ~ .checkmark:after {
-display: block;
-}
+    function updatePreloader() {
+      progress += Math.random() * 10 + 5;
+      if (progress > 100) progress = 100;
+      preloaderNum.textContent = String(Math.floor(progress)).padStart(2, '0');
+      preloaderFill.style.transform = `scaleX(${progress / 100})`;
+      
+      if (Math.floor(progress) % 20 === 0 && shuffleIdx < shuffleTexts.length - 1) {
+        shuffleIdx = Math.min(shuffleIdx + 1, shuffleTexts.length - 1);
+        shuffleText();
+      }
+      
+      if (progress < 100) {
+        requestAnimationFrame(() => setTimeout(updatePreloader, 60 + Math.random() * 100));
+      } else {
+        setTimeout(() => {
+          preloader.classList.add('done');
+          initEntrance();
+        }, 600);
+      }
+    }
+    shuffleText();
+    updatePreloader();
 
-.animated-checkbox .checkmark:after {
-left: 9px;
-top: 5px;
-width: 5px;
-height: 10px;
-border: solid white;
-border-width: 0 3px 3px 0;
-transform: rotate(45deg);
-animation: checkmark-appear 0.4s ease;
-}
+    // ═══════════════════════════════════════════
+    // LOTTIE
+    // ═══════════════════════════════════════════
+    lottie.loadAnimation({
+      container: document.getElementById('heroLottie'),
+      renderer: 'svg', loop: true, autoplay: true,
+      path: 'https://assets3.lottiefiles.com/packages/lf20_iorpbol0.json'
+    });
 
-@keyframes checkmark-appear {
-0% {
-opacity: 0;
-transform: rotate(45deg) scale(0);
-}
-100% {
-opacity: 1;
-transform: rotate(45deg) scale(1);
-}
-}
-`,
-resources: [
-{ title: 'CSS Animated Checkboxes', url: 'https://freefrontend.com/css-checkboxes/' },
-{ title: 'Accessible Custom Checkboxes', url: 'https://css-tricks.com/custom-styling-form-inputs-with-modern-css-features/' },
-],
-},
-{
-id: 11,
-title: 'Animated Hamburger Menu',
-description: 'Create an engaging animated hamburger menu icon.',
-image: 'animated-hamburger.jpg',
-category: 'Navigation',
-liveDemo: `
-<div class="hamburger-container">
-<button class="hamburger" id="hamburger-toggle">
-<span></span>
-<span></span>
-<span></span>
-</button>
-</div>
-`,
-codeSnippet: `
-.hamburger {
-display: flex;
-flex-direction: column;
-justify-content: space-around;
-width: 2rem;
-height: 2rem;
-background: transparent;
-border: none;
-cursor: pointer;
-padding: 0;
-}
+    // ═══════════════════════════════════════════
+    // CUSTOM CURSOR + MAGNETIC
+    // ═══════════════════════════════════════════
+    const cursor = document.getElementById('cursor');
+    const cursorDot = cursor.querySelector('.cursor-dot');
+    const cursorRing = cursor.querySelector('.cursor-ring');
+    const cursorLabel = cursor.querySelector('.cursor-label');
+    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
 
-.hamburger span {
-width: 2rem;
-height: 0.25rem;
-background: #333;
-border-radius: 10px;
-transition: all 0.3s linear;
-position: relative;
-transform-origin: 1px;
-}
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        cursorDot.style.transform = `translate(${mouseX - 3}px, ${mouseY - 3}px)`;
+      });
+      function animateCursor() {
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        cursorRing.style.transform = `translate(${ringX - 22}px, ${ringY - 22}px)`;
+        if (cursorLabel.textContent) cursorLabel.style.transform = `translate(${ringX}px, ${ringY}px)`;
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
 
-.hamburger.open span:first-child {
-transform: rotate(45deg);
-}
+      document.querySelectorAll('a, button, .trend-card, .showcase-item, .resource-row, .magnetic').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursor.classList.add('hover');
+          if (el.classList.contains('showcase-item') || el.classList.contains('trend-card')) {
+            cursor.classList.add('view'); cursorLabel.textContent = 'View';
+          }
+        });
+        el.addEventListener('mouseleave', () => {
+          cursor.classList.remove('hover', 'view'); cursorLabel.textContent = '';
+          el.style.transform = '';
+        });
+        el.addEventListener('mousemove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          el.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+        });
+      });
+    }
 
-.hamburger.open span:nth-child(2) {
-opacity: 0;
-}
+    // ═══════════════════════════════════════════
+    // 3D TILT CARDS
+    // ═══════════════════════════════════════════
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotateX = (y - 0.5) * -15;
+        const rotateY = (x - 0.5) * 15;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        card.style.transition = 'transform 0.6s var(--ease-expo)';
+        setTimeout(() => card.style.transition = 'transform 0.1s ease-out', 600);
+      });
+    });
 
-.hamburger.open span:nth-child(3) {
-transform: rotate(-45deg);
-}
-`,
-resources: [
-{ title: 'Animated Hamburger Menu Icons', url: 'https://github.com/jonsuh/hamburgers' },
-{ title: 'CSS Hamburger Menu Tutorial', url: 'https://css-tricks.com/hamburger-menu-with-a-side-of-react-hooks-and-styled-components/' },
-],
-},
-{
-id: 12,
-title: 'Floating Labels',
-description: 'Implement elegant floating labels for form inputs.',
-image: 'floating-labels.jpg',
-category: 'Form Design',
-liveDemo: `
-<div class="floating-label-container">
-<div class="floating-label">
-<input type="text" id="name" placeholder=" " required>
-<label for="name">Name</label>
-</div>
-</div>
-`,
-codeSnippet: `
-.floating-label {
-position: relative;
-margin-bottom: 20px;
-}
+    // ═══════════════════════════════════════════
+    // NAVIGATION
+    // ═══════════════════════════════════════════
+    const nav = document.querySelector('.nav');
+    let lastScroll = 0;
+    lenis.on('scroll', ({ scroll }) => {
+      nav.style.transform = scroll > 100 && scroll > lastScroll ? 'translateY(-100%)' : 'translateY(0)';
+      lastScroll = scroll;
+    });
 
-.floating-label input {
-width: 100%;
-padding: 10px;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 16px;
-transition: all 0.3s ease;
-}
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    document.getElementById('navTrigger').addEventListener('click', () => { mobileOverlay.classList.add('open'); lenis.stop(); });
+    document.getElementById('mobileClose').addEventListener('click', () => { mobileOverlay.classList.remove('open'); lenis.start(); });
+    mobileOverlay.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { mobileOverlay.classList.remove('open'); lenis.start(); }));
 
-.floating-label label {
-position: absolute;
-top: 50%;
-left: 10px;
-transform: translateY(-50%);
-font-size: 16px;
-color: #999;
-pointer-events: none;
-transition: all 0.3s ease;
-}
+    // ═══════════════════════════════════════════
+    // ENTRANCE ANIMATIONS
+    // ═══════════════════════════════════════════
+    function initEntrance() {
+      gsap.to('.hero-eyebrow', { opacity: 1, y: 0, duration: 1, ease: 'expo.out' });
+      gsap.to('.hero-title .line-inner', { y: 0, duration: 1.4, stagger: 0.15, ease: 'expo.out', delay: 0.2 });
+      gsap.to('.hero-desc', { opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: 0.6 });
+      gsap.to('.hero-lottie', { opacity: 0.7, scale: 1, duration: 1.2, ease: 'expo.out', delay: 0.8 });
+      gsap.to('.hero-cta', { opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: 1 });
+      gsap.to('.hero-scroll', { opacity: 1, duration: 1, ease: 'expo.out', delay: 1.2 });
+    }
 
-.floating-label input:focus + label,
-.floating-label input:not(:placeholder-shown) + label {
-top: 0;
-font-size: 12px;
-color: #333;
-background-color: white;
-padding: 0 5px;
-}
+    // ═══════════════════════════════════════════
+    // SCROLL REVEALS
+    // ═══════════════════════════════════════════
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-.floating-label input:focus {
-border-color: #007bff;
-box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-}
-`,
-resources: [
-{ title: 'CSS-only Floating Labels', url: 'https://css-tricks.com/float-labels-css/' },
-{ title: 'Accessible Floating Labels', url: 'https://medium.com/@eugenioluminari/accessible-floating-labels-55917786c3f1' },
-],
-},
-{
-id: 13,
-title: 'Skeleton Loading',
-description: 'Implement skeleton screens for better perceived performance.',
-image: 'skeleton-loading.jpg',
-category: 'UX Design',
-liveDemo: `
-<div class="skeleton-container">
-<div class="skeleton-card">
-<div class="skeleton-image"></div>
-<div class="skeleton-text"></div>
-<div class="skeleton-text"></div>
-</div>
-</div>
-`,
-codeSnippet: `
-.skeleton-card {
-width: 300px;
-padding: 20px;
-background-color: #f0f0f0;
-border-radius: 8px;
-}
+    // Footer mega
+    const footerMega = document.getElementById('footerMega');
+    const footerObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          gsap.to(footerMega.querySelectorAll('.line'), { y: 0, duration: 2, stagger: 0.15, ease: 'expo.out' });
+          footerObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    footerObs.observe(footerMega);
 
-.skeleton-image {
-width: 100%;
-height: 200px;
-background-color: #e0e0e0;
-margin-bottom: 15px;
-border-radius: 4px;
-}
+    // ═══════════════════════════════════════════
+    // HORIZONTAL SCROLL
+    // ═══════════════════════════════════════════
+    const trendsTrack = document.getElementById('trendsTrack');
+    const totalWidth = trendsTrack.scrollWidth - window.innerWidth;
+    gsap.to(trendsTrack, {
+      x: -totalWidth, ease: 'none',
+      scrollTrigger: { trigger: '.trends-wrapper', pin: true, scrub: 1, end: () => `+=${totalWidth}` }
+    });
+    trendsTrack.querySelectorAll('.trend-card img').forEach(img => {
+      gsap.to(img, { x: 60, ease: 'none', scrollTrigger: { trigger: '.trends-wrapper', start: 'top top', end: () => `+=${totalWidth}`, scrub: 1 } });
+    });
 
-.skeleton-text {
-height: 20px;
-background-color: #e0e0e0;
-margin-bottom: 10px;
-border-radius: 4px;
-}
+    // ═══════════════════════════════════════════
+    // PLAYGROUND
+    // ═══════════════════════════════════════════
+    const pBox = document.getElementById('pBox'), pText = document.getElementById('pText'), codeOut = document.getElementById('codeOut');
+    const inputs = {
+      bg: document.getElementById('bgColor'), txt: document.getElementById('txtColor'),
+      rad: document.getElementById('radius'), pad: document.getElementById('padding'),
+      fs: document.getElementById('fontSize'), sh: document.getElementById('shadow')
+    };
+    const vals = {
+      bg: document.getElementById('bgVal'), txt: document.getElementById('txtVal'),
+      rad: document.getElementById('radVal'), pad: document.getElementById('padVal'),
+      fs: document.getElementById('fsVal'), sh: document.getElementById('shVal')
+    };
+    function updateP() {
+      const bg = inputs.bg.value, txt = inputs.txt.value, r = inputs.rad.value, p = inputs.pad.value, f = inputs.fs.value, s = inputs.sh.value;
+      pBox.style.backgroundColor = bg; pBox.style.borderRadius = r + 'px'; pBox.style.padding = p + 'px';
+      pBox.style.boxShadow = `0 8px ${s}px rgba(0,0,0,0.35)`; pText.style.color = txt; pText.style.fontSize = f + 'px';
+      vals.bg.textContent = bg; vals.txt.textContent = txt; vals.rad.textContent = r + 'px';
+      vals.pad.textContent = p + 'px'; vals.fs.textContent = f + 'px'; vals.sh.textContent = s + 'px';
+      codeOut.textContent = `.my-element {
+  background-color: ${bg};
+  color: ${txt};
+  border-radius: ${r}px;
+  padding: ${p}px;
+  font-size: ${f}px;
+  box-shadow: 0 8px ${s}px rgba(0,0,0,0.35);
+}`;
+    }
+    Object.values(inputs).forEach(i => i.addEventListener('input', updateP));
 
-.skeleton-text:last-child {
-width: 80%;
-}
+    // ═══════════════════════════════════════════
+    // AI CHAT
+    // ═══════════════════════════════════════════
+    const aiMessages = document.getElementById('aiMessages'), aiInput = document.getElementById('aiInput'), aiSend = document.getElementById('aiSend');
+    const responses = {
+      'glassmorphism': 'Glassmorphism uses backdrop-filter: blur() with semi-transparent backgrounds. Keep contrast ratios above 4.5:1. Use 1px borders at 4-6% opacity to define edges without breaking the effect.',
+      'neumorphism': 'Neumorphism creates soft, extruded elements using dual box-shadows. Best on light backgrounds. Always pair with high-contrast text for accessibility compliance.',
+      'dark mode': 'Use CSS custom properties and prefers-color-scheme. Avoid pure black (#000); use warm dark tones like #0C0C0C for depth. Ensure 4.5:1 contrast minimum.',
+      'gradient': 'Use CSS linear-gradient with 135deg angles. Always provide a solid fallback background-color. Animate with background-position for living gradients.',
+      'micro': 'Keep micro-interactions under 300ms. Use expo easing (cubic-bezier(0.16, 1, 0.3, 1)) for natural deceleration. Respect prefers-reduced-motion.',
+      'skeleton': 'Skeleton screens improve perceived performance. Use shimmer with background-position animation. Match structure to final content to prevent CLS.',
+      'parallax': 'Parallax adds depth but can cause motion sickness. Keep speed ratios between 0.3x and 0.6x. Provide a reduced-motion alternative.',
+      'default': 'Focus on: accessibility first (WCAG 2.2 AA), performance (Core Web Vitals), and a restrained color palette. Ask about a specific trend.'
+    };
+    function addMsg(text, isUser) {
+      const msg = document.createElement('div'); msg.className = `msg ${isUser ? 'user' : 'bot'}`;
+      msg.innerHTML = `<div class="msg-bubble">${text}</div>`; aiMessages.appendChild(msg); aiMessages.scrollTop = aiMessages.scrollHeight;
+    }
+    function getResp(input) { const lower = input.toLowerCase(); for (const [k, v] of Object.entries(responses)) if (lower.includes(k)) return v; return responses.default; }
+    function sendMsg() { const text = aiInput.value.trim(); if (!text) return; addMsg(text, true); aiInput.value = ''; setTimeout(() => addMsg(getResp(text)), 700 + Math.random() * 500); }
+    aiSend.addEventListener('click', sendMsg); aiInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendMsg(); });
 
-@keyframes skeleton-loading {
-0% {
-background-position: 100% 50%;
-}
-100% {
-background-position: 0 50%;
-}
-}
-
-.skeleton-card * {
-background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-background-size: 200% 100%;
-animation: skeleton-loading 1.5s infinite;
-}
-`,
-resources: [
-{ title: 'Skeleton Screen Patterns', url: 'https://uxdesign.cc/what-you-should-know-about-skeleton-screens-a820c45a571a' },
-{ title: 'Creating Skeleton Screens with CSS', url: 'https://css-tricks.com/building-skeleton-screens-css-custom-properties/' },
-],
-},
-{
-id: 14,
-title: '3D Card Flip',
-description: 'Create an interactive 3D card flip effect.',
-image: '3d-card-flip.jpg',
-category: 'Animation',
-liveDemo: `
-<div class="flip-card-container">
-<div class="flip-card">
-<div class="flip-card-inner">
-<div class="flip-card-front">
-<h3>Front Side</h3>
-</div>
-<div class="flip-card-back">
-<h3>Back Side</h3>
-</div>
-</div>
-</div>
-</div>
-`,
-codeSnippet: `
-.flip-card {
-background-color: transparent;
-width: 300px;
-height: 200px;
-perspective: 1000px;
-}
-
-.flip-card-inner {
-position: relative;
-width: 100%;
-height: 100%;
-text-align: center;
-transition: transform 0.6s;
-transform-style: preserve-3d;
-}
-
-.flip-card:hover .flip-card-inner {
-transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-position: absolute;
-width: 100%;
-height: 100%;
-backface-visibility: hidden;
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: 8px;
-}
-
-.flip-card-front {
-background-color: #bbb;
-color: black;
-}
-
-.flip-card-back {
-background-color: #2980b9;
-color: white;
-transform: rotateY(180deg);
-}
-`,
-resources: [
-{ title: '3D Card Flip Tutorial', url: 'https://3dtransforms.desandro.com/card-flip' },
-{ title: 'CSS 3D Transforms', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate3d' },
-],
-},
-{
-id: 15,
-title: 'Animated Progress Bar',
-description: 'Create visually appealing animated progress bars.',
-image: 'animated-progress-bar.jpg',
-category: 'UI Design',
-liveDemo: `
-<div class="progress-container">
-<div class="progress-bar">
-<div class="progress-fill"></div>
-</div>
-</div>
-`,
-codeSnippet: `
-.progress-container {
-width: 300px;
-background-color: #f0f0f0;
-border-radius: 20px;
-padding: 3px;
-}
-
-.progress-bar {
-height: 20px;
-background-color: #4CAF50;
-border-radius: 20px;
-width: 0;
-transition: width 1s ease-in-out;
-}
-
-.progress-fill {
-height: 100%;
-background-image: linear-gradient(
-45deg,
-rgba(255, 255, 255, 0.15) 25%,
-transparent 25%,
-transparent 50%,
-rgba(255, 255, 255, 0.15) 50%,
-rgba(255, 255, 255, 0.15) 75%,
-transparent 75%,
-transparent
-);
-background-size: 40px 40px;
-animation: stripes 1s linear infinite;
-}
-
-@keyframes stripes {
-0% {
-background-position: 0 0;
-}
-100% {
-background-position: 40px 0;
-}
-}
-`,
-resources: [
-{ title: 'CSS Progress Bars', url: 'https://css-tricks.com/css3-progress-bars/' },
-{ title: 'Animated Progress Bar Designs', url: 'https://freefrontend.com/css-progress-bars/' },
-],
-},
-{
-id: 16,
-title: 'Tooltip Animations',
-description: 'Create engaging tooltip animations for better user experience.',
-image: 'tooltip-animations.jpg',
-category: 'UI Design',
-liveDemo: `
-<div class="tooltip-container">
-<button class="tooltip-trigger">Hover me
-<span class="tooltip">I'm an animated tooltip!</span>
-</button>
-</div>
-`,
-codeSnippet: `
-.tooltip-trigger {
-position: relative;
-display: inline-block;
-padding: 10px 20px;
-background-color: #007bff;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-}
-
-.tooltip {
-visibility: hidden;
-width: 120px;
-background-color: #333;
-color: #fff;
-text-align: center;
-border-radius: 6px;
-padding: 5px;
-position: absolute;
-z-index: 1;
-bottom: 125%;
-left: 50%;
-margin-left: -60px;
-opacity: 0;
-transition: opacity 0.3s, transform 0.3s;
-transform: translateY(10px);
-}
-
-.tooltip-trigger:hover .tooltip {
-visibility: visible;
-opacity: 1;
-transform: translateY(0);
-}
-
-.tooltip::after {
-content: "";
-position: absolute;
-top: 100%;
-left: 50%;
-margin-left: -5px;
-border-width: 5px;
-border-style: solid;
-border-color: #333 transparent transparent transparent;
-}
-`,
-resources: [
-{ title: 'CSS Tooltip Tutorial', url: 'https://www.w3schools.com/css/css_tooltip.asp' },
-{ title: 'Advanced CSS Tooltip Techniques', url: 'https://css-tricks.com/bubble-point-tooltips-with-css3-jquery/' },
-],
-},
-{
-id: 17,
-title: 'Scroll-Triggered Animations',
-description: 'Create animations that trigger as the user scrolls down the page.',
-image: 'scroll-animations.jpg',
-category: 'Animation',
-liveDemo: `
-<div class="scroll-animation-container">
-<div class="scroll-element fade-in">I fade in as you scroll</div>
-<div class="scroll-element slide-in">I slide in as you scroll</div>
-</div>
-`,
-codeSnippet: `
-.scroll-element {
-opacity: 0;
-transform: translateY(20px);
-transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.scroll-element.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-.fade-in {
-transition-delay: 0.2s;
-}
-
-.slide-in {
-transition-delay: 0.4s;
-}
-
-// JavaScript to trigger animations
-const scrollElements = document.querySelectorAll('.scroll-element');
-
-const elementInView = (el, percentageScroll = 100) => {
-const elementTop = el.getBoundingClientRect().top;
-return (
-elementTop <= 
-((window.innerHeight || document.documentElement.clientHeight) * (percentageScroll/100))
-);
-};
-
-const displayScrollElement = (element) => {
-element.classList.add('visible');
-};
-
-const hideScrollElement = (element) => {
-element.classList.remove('visible');
-};
-
-const handleScrollAnimation = () => {
-scrollElements.forEach((el) => {
-if (elementInView(el, 100)) {
-displayScrollElement(el);
-} else {
-hideScrollElement(el);
-}
-})
-}
-
-window.addEventListener('scroll', () => {
-handleScrollAnimation();
-});
-`,
-resources: [
-{ title: 'Scroll-Triggered Animations with Intersection Observer', url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API' },
-{ title: 'AOS Library for Scroll Animations', url: 'https://github.com/michalsnik/aos' },
-],
-},
-                  ],
-                  selectedTrend: null,
-                  cssGenerator: {
-                      bgColor: '#ffffff',
-                      textColor: '#000000',
-                      borderRadius: 10,
-                      padding: 20,
-                  },
-                  aiPrompt: '',
-                  aiResponse: '',
-                  communityProjects: [
-                      {
-                          id: 1,
-                          title: 'Neon Nights',
-                          description: 'A cyberpunk-inspired portfolio website.',
-                          image: 'Screenshot 2024-07-21 162022.png',
-                          author: 'SRIDHAR',
-                          authorAvatar: 'image.png',
-                          link: 'https://sridhar242004.github.io/PORTFOLIO-SRIDHAR-S/index2.html',
-                      },
-                      // Add more community projects here
-                  ],
-                  learningResources: [
-                      {
-                          id: 1,
-                          title: 'Modern CSS Techniques',
-                          description: 'Learn the latest CSS features and techniques.',
-                          icon: 'fas fa-code',
-                          link: 'https://example.com/modern-css-course',
-                      },
-                      // Add more learning resources here
-                  ],
-                  showSubmitProjectModal: false,
-                  newProject: {
-                      title: '',
-                      description: '',
-                      link: '',
-                      image: null,
-                  },
-                  newsletterEmail: '',
-              };
-          },
-          computed: {
-              
-            generatedCSS() {
-              return {
-                  backgroundColor: this.cssGenerator.bgColor,
-                  color: this.cssGenerator.textColor,
-                  borderRadius: `${this.cssGenerator.borderRadius}px`,
-                  padding: `${this.cssGenerator.padding}px`,
-              };
-          },
-          generatedCSSCode() {
-              return `
-.generated-element {
-background-color: ${this.cssGenerator.bgColor};
-color: ${this.cssGenerator.textColor};
-border-radius: ${this.cssGenerator.borderRadius}px;
-padding: ${this.cssGenerator.padding}px;
-}
-              `.trim();
-          },
-      },
-      mounted() {
-          window.addEventListener('scroll', this.handleScroll);
-      },
-      methods: {
-          handleScroll() {
-              this.scrolled = window.scrollY > 50;
-          },
-          toggleMobileMenu() {
-              this.mobileMenuOpen = !this.mobileMenuOpen;
-          },
-          scrollToSection(sectionId) {
-              const element = document.getElementById(sectionId);
-              if (element) {
-                  element.scrollIntoView({ behavior: 'smooth' });
-              }
-              this.mobileMenuOpen = false;
-          },
-          openTrendDemo(trend) {
-              this.selectedTrend = trend;
-          },
-          closeTrendDemo() {
-              this.selectedTrend = null;
-          },
-          copyCode(code) {
-              navigator.clipboard.writeText(code).then(() => {
-                  alert('Code copied to clipboard!');
-              });
-          },
-          copyCSS() {
-              navigator.clipboard.writeText(this.generatedCSSCode).then(() => {
-                  alert('CSS copied to clipboard!');
-              });
-          },
-          generateAIResponse() {
-              // Simulated AI response - replace with actual API call in a real application
-              const responses = [
-                  "Consider using a monochromatic color scheme to create a sleek and modern look.",
-                  "Experiment with asymmetrical layouts to add visual interest to your design.",
-                  "Incorporate micro-interactions to enhance user engagement and provide feedback.",
-                  "Try using variable fonts to create dynamic and responsive typography.",
-                  "Implement a dark mode option to improve accessibility and user preference.",
-              ];
-              this.aiResponse = responses[Math.floor(Math.random() * responses.length)];
-          },
-          openSubmitProjectModal() {
-              this.showSubmitProjectModal = true;
-          },
-          closeSubmitProjectModal() {
-              this.showSubmitProjectModal = false;
-              this.newProject = {
-                  title: '',
-                  description: '',
-                  link: '',
-                  image: null,
-              };
-          },
-          handleImageUpload(event) {
-              const file = event.target.files[0];
-              if (file) {
-                  this.newProject.image = URL.createObjectURL(file);
-              }
-          },
-          submitProject() {
-              // In a real application, you would send this data to your backend
-              console.log('Submitting project:', this.newProject);
-              
-              // Add the new project to the communityProjects array
-              this.communityProjects.unshift({
-                  id: this.communityProjects.length + 1,
-                  title: this.newProject.title,
-                  description: this.newProject.description,
-                  image: this.newProject.image,
-                  author: 'Anonymous', // Replace with actual user data in a real app
-                  authorAvatar: 'https://example.com/default-avatar.jpg',
-                  link: this.newProject.link,
-              });
-
-              // Close the modal and reset the form
-              this.closeSubmitProjectModal();
-              alert('Project submitted successfully!');
-          },
-          subscribeNewsletter() {
-              // In a real application, you would send this data to your backend
-              console.log('Subscribing email:', this.newsletterEmail);
-              alert('Thank you for subscribing to our newsletter!');
-              this.newsletterEmail = '';
-          },
-          downloadCode(trend) {
-              const element = document.createElement('a');
-              const file = new Blob([trend.codeSnippet], {type: 'text/plain'});
-              element.href = URL.createObjectURL(file);
-              element.download = `${trend.title.toLowerCase().replace(/\s+/g, '-')}-code.txt`;
-              document.body.appendChild(element);
-              element.click();
-              document.body.removeChild(element);
-          },
-      },
-  });
-
-  app.mount('#app');
-</script>
+    // ═══════════════════════════════════════════
+    // SMOOTH ANCHORS
+    // ═══════════════════════════════════════════
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => { e.preventDefault(); const target = document.querySelector(a.getAttribute('href')); if (target) lenis.scrollTo(target, { offset: -80 }); });
+    });
+  </script>
 </body>
 </html>
